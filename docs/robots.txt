@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://georgianastasov.github.io/ai-repo-structure/sitemap.xml

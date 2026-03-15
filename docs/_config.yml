@@ -1,0 +1,8 @@
+title: ai-repo-structure
+description: A practical learning repository that shows how to structure a real AI-enabled repo using AGENTS.md, CLAUDE.md, Claude rules and skills, GitHub Copilot instructions, agents, skills, and shared external skills.
+theme: minima
+markdown: kramdown
+plugins:
+  - jekyll-sitemap
+url: "https://georgianastasov.github.io"
+baseurl: "/ai-repo-structure"
