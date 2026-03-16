@@ -12,7 +12,7 @@
 [![Status](https://img.shields.io/badge/status-active-2563eb?style=for-the-badge)](#current-status)
 [![Type](https://img.shields.io/badge/type-learning%20repo-111827?style=for-the-badge)](#overview)
 [![Template](https://img.shields.io/badge/template-ai%20repo-0f766e?style=for-the-badge)](#who-this-is-for)
-[![Learn](https://img.shields.io/badge/learn-course-1d4ed8?style=for-the-badge)](./learn.md)
+[![Learn](https://img.shields.io/badge/learn-course-1d4ed8?style=for-the-badge)](./LEARN.md)
 [![AGENTS.md](https://img.shields.io/badge/AGENTS.md-supported-5b21b6?style=for-the-badge)](#shared-root-layer)
 [![Claude](https://img.shields.io/badge/claude-configured-d97706?style=for-the-badge)](#internal-claude-layer)
 [![GitHub%20Copilot](https://img.shields.io/badge/github%20copilot-configured-000000?style=for-the-badge&logo=github)](#internal-githubcopilot-layer)
