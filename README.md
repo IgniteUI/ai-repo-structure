@@ -35,7 +35,7 @@ It shows how to combine:
 - shared agent instructions with [`AGENTS.md`](./AGENTS.md)
 - Claude-specific guidance with [`CLAUDE.md`](./CLAUDE.md)
 - internal Claude rules, agents, skills, and hooks in [`.claude/`](./.claude)
-- internal GitHub Copilot instructions, agents, skills, and hooks in [`.github/`](./.github)
+- internal GitHub Copilot instructions, agents, skills, and optional Copilot coding agent hooks in [`.github/`](./.github)
 - external/shared skills in [`skills/`](./skills)
 - course for understanding and copying the system [`LEARN.md`](./LEARN.md)
 
@@ -183,7 +183,7 @@ ai-repo-structure/
 │  ├─ instructions/                              # Path-specific Copilot instructions
 │  │  └─ learning-content.instructions.md        # Copilot guidance for README, AGENTS, CLAUDE, and other teaching content
 │  ├─ hooks/                                     # GitHub/Copilot workspace hook configs
-│  │  └─ learning-context.json                   # SessionStart hook config for injecting repo context
+│  │  └─ session-start-check.json                # Official sessionStart hook config for validating core repo guidance
 │  ├─ skills/                                    # GitHub Copilot skills for repeatable maintainer workflows
 │  │  └─ review-learning-repo-pr/                # GitHub skill for reviewing PRs that change the repo’s learning structure
 │  │     ├─ assets/                              # Reusable review output resources
@@ -217,9 +217,13 @@ ai-repo-structure/
 ├─ scripts/                                      # Shared repo utility scripts
 │  └─ hooks/                                     # Helper scripts used by Claude and GitHub/Copilot hooks
 │     ├─ claude-session-context.sh               # Emits repo context for Claude SessionStart
-│     └─ github-session-context.sh               # Emits JSON additionalContext for GitHub/Copilot SessionStart
+│     └─ github-session-start-check.sh           # Bash sessionStart check for GitHub Copilot coding agent hooks
 │
 ├─ src/                                          # Project source area; currently present as the code/application folder
+|  ├─ index.html                                 # Small HTML shell for the demo page
+|  ├─ styles.css                                 # Minimal styles for the AI Repo Map layout
+|  └─ app.js                                     # Small script that renders the repo map content
+|
 ├─ AGENTS.md                                     # Shared agent-facing instructions for coding agents working in the repo
 ├─ CLAUDE.md                                     # Main Claude-specific project guidance
 ├─ LEARN.md                                      # Course for understanding and copying the system
@@ -339,16 +343,18 @@ Custom GitHub Copilot agents for this repo.
   A GitHub-side maintainer agent focused on structure, learning quality, and consistency.
 
 ### [`.github/hooks/`](./.github/hooks)
-GitHub/Copilot hook configs.
+Optional GitHub Copilot coding agent hook configs.
 
-- `learning-context.json`  
-  A session-start hook config that injects repo context at the beginning of a session.
+These files use GitHub's documented `.github/hooks/*.json` format for Copilot coding agent on GitHub and GitHub Copilot CLI. They are not a general GitHub repository feature and they are not GitHub Actions.
+
+- `session-start-check.json`  
+  An official `sessionStart` hook config that runs a small deterministic startup check for core repo guidance files.
 
 ### [`.github/skills/`](./.github/skills)
 Reusable GitHub/Copilot maintainer workflows.
 
 #### [`.github/skills/review-learning-repo-pr/`](./.github/skills/review-learning-repo-pr)
-A skill for reviewing pull requests that change the repo’s learning structure.
+A skill for reviewing pull requests that change the repo's learning structure.
 
 One level deeper:
 
@@ -413,8 +419,8 @@ Helper scripts used by hooks.
 - `claude-session-context.sh`  
   Emits repo context for Claude session start.
 
-- `github-session-context.sh`  
-  Emits JSON additional context for GitHub/Copilot session start.
+- `github-session-start-check.sh`  
+  Bash support script for a GitHub Copilot coding agent `sessionStart` hook.
 
 These scripts are not the lesson itself.  
 They support the automatic orientation behavior.
@@ -428,7 +434,8 @@ Hooks are automatic commands that run at defined lifecycle events.
 In this repo, hooks are used for something simple and useful:
 
 - a session starts
-- the AI gets quick orientation context about the repo
+- Claude can receive quick orientation context
+- GitHub Copilot coding agent can run an optional deterministic startup check
 
 That is a good fit because it is:
 
@@ -453,7 +460,7 @@ This project shows a few important ideas:
    - rules and instructions = guidance  
    - agents = specialized roles  
    - skills = reusable workflows  
-   - hooks = automatic deterministic behavior
+   - hooks = optional deterministic automation for supported runtimes
 
 4. **A template repo should still feel real**  
    The best template repos do not only name folders.  
@@ -475,7 +482,7 @@ It already has:
 - one GitHub agent
 - one GitHub skill
 - one external shared skill
-- one hook on each side
+- one optional hook on each side
 
 That means the repo is already more than an idea.  
 It has a real internal architecture.

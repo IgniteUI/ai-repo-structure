@@ -12,12 +12,21 @@ It demonstrates how to organize:
 
 ## Working rules
 - Read `README.md` first for the repository purpose.
+- Read `LEARN.md` for the guided explanation of the repository structure and how the layers fit together.
 - Read `CLAUDE.md` for Claude-specific project rules.
 - Read `AGENTS.md` for agents project rules.
 - Check `.github/copilot-instructions.md` for Copilot-specific guidance.
 - Prefer small, focused changes.
 - Do not make unrelated refactors.
 - Update docs when behavior or structure changes.
+
+## Commands
+This repo is currently a documentation-first template repo.
+
+- Install: no install step is required yet
+- Dev: no local app/dev server is configured yet
+- Test: `bash .claude/skills/validate-learning-repo/scripts/check-required-files.sh`
+- Lint: no dedicated lint command is configured yet
 
 ## Project structure
 - `.claude/` contains internal Claude configuration for maintainers.
@@ -30,11 +39,11 @@ It demonstrates how to organize:
 - When adding a skill, use this structure:
 
 ```
-  <skill-name>/
-  ├── SKILL.md
-  ├── scripts/
-  ├── references/
-  └── assets/
+<skill-name>/
+├── SKILL.md
+├── scripts/
+├── references/
+└── assets/
 ```
 
 - Keep instructions easy to scan.
@@ -42,8 +51,13 @@ It demonstrates how to organize:
 
 ## Testing and validation
 Before finishing work:
+- run `bash .claude/skills/validate-learning-repo/scripts/check-required-files.sh`
 - check that links and referenced files still exist
 - make sure any new folder follows the documented template structure
+- make sure examples and file references still match the real repo
+- if hook-related files changed, check:
+  - `bash scripts/hooks/claude-session-context.sh`
+  - `bash scripts/hooks/github-session-start-check.sh`
 
 ## Pull request guidance
 - Explain what changed and why.

@@ -40,7 +40,7 @@ This course is written to be simple:
 - [Module 9 — GitHub path-specific instructions](#module-9--github-path-specific-instructions)
 - [Module 10 — GitHub agents](#module-10--github-agents)
 - [Module 11 — GitHub skills](#module-11--github-skills)
-- [Module 12 — GitHub hooks](#module-12--github-hooks)
+- [Module 12 — GitHub Copilot coding agent hooks](#module-12--github-copilot-coding-agent-hooks)
 - [Module 13 — Shared skills](#module-13--shared-skills)
 - [Module 14 — Hook support scripts](#module-14--hook-support-scripts)
 - [A good rollout order](#a-good-rollout-order)
@@ -56,7 +56,7 @@ By the end, you should be able to build a repo with:
 - shared agent instructions in `AGENTS.md`
 - Claude-specific project context in `CLAUDE.md`
 - internal Claude rules, agents, skills, and hooks in `.claude/`
-- internal GitHub Copilot instructions, agents, skills, and hooks in `.github/`
+- internal GitHub Copilot instructions, agents, skills, and optional Copilot coding agent hooks in `.github/`
 - external/shared skills in `skills/`
 
 The main idea is simple:
@@ -64,7 +64,7 @@ The main idea is simple:
 - put **shared guidance** in the root
 - put **tool-specific internals** in their own folders
 - put **repeatable workflows** in skills
-- put **automatic behavior** in hooks
+- put **optional deterministic automation** in hooks
 
 ---
 
@@ -797,24 +797,13 @@ Bad uses:
 ```json
 {
   "hooks": {
-    "Notification": [
+    "SessionStart": [
       {
         "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "./scripts/hooks/claude-session-context.sh"
-          }
-        ]
-      }
-    ],
-    "SubagentStart": [
-      {
-        "matcher": "change-reviewer",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo 'Starting focused review workflow'"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/hooks/claude-session-context.sh"
           }
         ]
       }
@@ -833,6 +822,8 @@ Bad uses:
 
 Use it for things that apply to almost every task.
 
+Unlike `CLAUDE.md`, this file is mainly about repo-wide editing behavior inside GitHub's instruction system, not about defining one central tool identity for the whole project.
+
 ## What the description is for
 
 The opening description should quickly tell Copilot:
@@ -849,6 +840,7 @@ A good repo-wide instruction file should be:
 - general
 - stable
 - useful across many tasks
+- clearly different from path-scoped instructions and workflow-specific skills
 
 Put in:
 
@@ -913,6 +905,8 @@ Path-specific instructions are for rules that only apply to certain files or fol
 
 Use them when repo-wide instructions would be too broad.
 
+This is one of the clearest GitHub-side differences from the Claude model: GitHub has a built-in path-targeting pattern here, so you can scope guidance by file glob instead of pushing everything into one always-on file.
+
 ## What the description is for
 
 The description should explain:
@@ -974,6 +968,8 @@ Avoid:
 GitHub agents are specialist Copilot profiles.
 
 Use one when you want a repeatable role for a specific class of work.
+
+Compared with Claude-side agents, these are often most useful for clearly named GitHub workflows such as test review, docs review, or PR-oriented maintenance.
 
 ## What the description is for
 
@@ -1059,6 +1055,8 @@ Do not:
 GitHub skills are repeatable GitHub/Copilot workflows.
 
 Use them when the task is detailed enough that it should not live in repo-wide instructions.
+
+The GitHub side differs from the Claude side less in structure than in emphasis: skills are where you can keep richer reusable workflow packs without turning repo-wide instructions into a long manual.
 
 ## What the description is for
 
@@ -1175,11 +1173,15 @@ A short review containing:
 
 ---
 
-# Module 12 — GitHub hooks
+# Module 12 — GitHub Copilot coding agent hooks
 
 ## What this file is for
 
-GitHub/Copilot hooks are for automatic actions at known events.
+GitHub Copilot coding agent hooks are for optional automatic actions at known events.
+
+This is not a general GitHub repository feature and it is not the same thing as GitHub Actions.
+
+In this repo, `.github/hooks/*.json` is used only for the official Copilot coding agent and GitHub Copilot CLI hook format.
 
 Use them for safe, deterministic automation.
 
@@ -1195,10 +1197,15 @@ The description around a hook should make it easy to see:
 
 Use hooks for:
 
-- context injection
 - safe formatting
 - simple validation
 - consistent startup behavior
+
+When you document them, say clearly that they are:
+
+- optional and advanced
+- specific to GitHub Copilot coding agent and GitHub Copilot CLI
+- different from repo-wide instructions, agents, skills, and GitHub Actions
 
 Do not use hooks for:
 
@@ -1210,9 +1217,17 @@ Do not use hooks for:
 
 ```json
 {
-  "event": "<event-name>",
-  "command": "<safe command>",
-  "purpose": "<one-line explanation>"
+  "version": "<version>",
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "<command>",
+        "bash": "<path to the hook>",
+        "cwd": "<.>",
+        "timeoutSec": "<number in sec>"
+      }
+    ]
+  }
 }
 ```
 
@@ -1220,11 +1235,21 @@ Do not use hooks for:
 
 ```json
 {
-  "event": "SessionStart",
-  "command": "./scripts/hooks/github-session-context.sh",
-  "purpose": "Provide a short repository orientation with source, tests, docs, and AI-related folders."
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "./scripts/hooks/github-session-start-check.sh",
+        "cwd": ".",
+        "timeoutSec": 10
+      }
+    ]
+  }
 }
 ```
+
+This repo uses `sessionStart` for a small project-state check. It validates that core guidance files such as `README.md`, `AGENTS.md`, `CLAUDE.md`, and `.github/copilot-instructions.md` still exist. That is safer than pretending GitHub hooks inject hidden repository context.
 
 ---
 
@@ -1340,7 +1365,7 @@ A short adoption plan that says:
 - Add one GitHub test-review skill.
 
 ## Add later
-- Add session-start hooks.
+- Add optional session-start hooks for supported runtimes.
 - Add one shared skill for onboarding or adoption.
 
 ## Risks to avoid
@@ -1419,7 +1444,7 @@ If you are adding this to a real repo, use this order:
 8. one Claude skill
 9. one GitHub agent
 10. one GitHub skill
-11. one hook on each side
+11. one optional hook on each side
 12. one shared skill
 
 This order works because it moves from:
@@ -1460,4 +1485,4 @@ Fix: keep all examples aligned with actual files and actual workflows.
 
 # One-sentence summary
 
-A strong AI-enabled repo is not a pile of AI files it is a clear system where shared instructions guide general work, tool-specific files handle specialist behavior, skills capture repeatable workflows, hooks automate deterministic steps, and every file has one easy-to-understand job.
+A strong AI-enabled repo is not a pile of AI files it is a clear system where shared instructions guide general work, tool-specific files handle specialist behavior, skills capture repeatable workflows, hooks provide optional deterministic automation for supported runtimes, and every file has one easy-to-understand job.
