@@ -20,6 +20,8 @@ Use this skill when the task is to verify that the repository still teaches the 
    - `skills/`
 4. Look for:
    - missing referenced files
+   - missing required `AGENTS.md` command entries
+   - repo guidance that teaches a required section or workflow but does not include it in practice
    - example trees that no longer match the repository
    - invalid agent or skill naming
    - duplicated guidance in the wrong layer

@@ -4,6 +4,7 @@
 - Do all paths mentioned in markdown files exist?
 - Do example repo trees match actual folders and files?
 - Are Claude files under `.claude/` and GitHub/Copilot files under `.github/`?
+- Does `AGENTS.md` include the required `## Commands` section?
 
 ## Agent quality
 - Does each agent have a clear purpose?
@@ -17,5 +18,6 @@
 
 ## Teaching quality
 - Are examples concrete instead of generic?
-- Are explanations tied to this repository’s actual structure?
+- Are explanations tied to this repository's actual structure?
 - Are equivalent Claude and GitHub concepts clearly separated?
+- Does the repo practice match what it teaches in `README.md`, `LEARN.md`, and `AGENTS.md`, including required sections and commands?
