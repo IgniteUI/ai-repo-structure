@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Repo Structure Map</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <h1>AI Repo Structure Map</h1>
+        <p class="hero-copy">
+          A small visual guide that shows how this repository separates shared guidance,
+          Claude-specific setup, GitHub/Copilot-specific setup, shared skills, and hook support.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button primary" href="https://github.com/IgniteUI/ai-repo-structure/blob/main/README.md" target="_blank">Open README.md</a>
+          <a class="button secondary" href="https://github.com/IgniteUI/ai-repo-structure/blob/main/LEARN.md" target="_blank">Open LEARN.md</a>
+        </div>
+      </header>
+
+      <main>
+        <section class="legend panel">
+          <h2>Core idea</h2>
+          <div class="legend-grid">
+            <div class="legend-item">
+              <strong>Instructions / rules</strong>
+              <span>Shared or scoped guidance</span>
+            </div>
+            <div class="legend-item">
+              <strong>Agents</strong>
+              <span>Specialist roles</span>
+            </div>
+            <div class="legend-item">
+              <strong>Skills</strong>
+              <span>Repeatable workflows</span>
+            </div>
+            <div class="legend-item">
+              <strong>Hooks</strong>
+              <span>Deterministic automation</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="architecture panel">
+          <div class="section-head">
+            <h2>How the layers connect</h2>
+            <p>Start at the root, then go deeper into tool-specific or shared workflow layers.</p>
+          </div>
+
+          <div id="layer-grid" class="layer-grid"></div>
+        </section>
+
+        <section class="flow panel">
+          <div class="section-head">
+            <h2>Suggested reading path</h2>
+            <p>The repo teaches best when read from overview to specialization.</p>
+          </div>
+
+          <ol id="reading-path" class="reading-path"></ol>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>
+          This demo is intentionally small: no framework, no build step, just a simple static page that makes the repo’s teaching model visible.
+        </p>
+      </footer>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
