@@ -57,7 +57,7 @@ Custom Copilot agents.
 Reusable Copilot workflows.
 
 ### `.github/hooks/`
-Workspace hook configuration for session context.
+Optional GitHub Copilot coding agent hook.
 
 ## External/shared layer
 
