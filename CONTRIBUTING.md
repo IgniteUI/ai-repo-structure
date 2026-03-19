@@ -2,8 +2,13 @@
 
 Thanks for contributing to `ai-repo-structure`.
 
-## What this repo is
-This repository is a practical learning and template repo for AI-enabled project structure.
+This repository is both:
+
+- a template repo
+- a reference implementation
+- a learning repo
+
+That means a good contribution should improve the real repository and keep the teaching accurate.
 
 It demonstrates:
 - `AGENTS.md` for shared agent instructions
@@ -12,25 +17,45 @@ It demonstrates:
 - `.github/` for internal GitHub Copilot instructions, agents, skills, and hooks
 - `skills/` for external/shared user-facing skills
 
-## Before you change anything
-Please:
-1. Read `README.md`
-2. Read `AGENTS.md`
-3. Read `CLAUDE.md`
+## Start here
+
+Before making changes, read:
+
+1. `README.md`
+2. `LEARN.md`
+3. `AGENTS.md`
+4. `CLAUDE.md`
 
 If your change touches AI-related files, make sure the examples and the real file structure stay aligned.
 
-## Contribution rules
-- Keep changes small and focused.
-- Do not make unrelated refactors.
-- Prefer real, working examples over placeholder content.
-- Keep naming consistent across files, folders, agents, and skills.
-- Update explanations when structure changes.
+## What good contributions look like
 
-## If you add a skill
+- Keep changes small and focused.
+- Prefer practical examples over placeholder content.
+- Keep file names and folder names predictable.
+- Update docs when behavior or structure changes.
+- Keep examples aligned with the real repository.
+
+## What to avoid
+
+- unrelated refactors
+- made-up folders, tools, or conventions
+- long theoretical explanations when a simple example is enough
+- mixing Claude-only, Copilot-only, and shared concepts without saying which is which
+
+## If you change the structure
+
+When adding, renaming, or removing files or folders:
+
+- update the matching docs and examples
+- keep `.claude/`, `.github/`, and `skills/` clearly separated
+- make sure the repo still teaches the same structure it actually contains
+
+## If you add or update a skill
+
 Use this structure:
 
-```
+```text
 <skill-name>/
 ├── SKILL.md
 ├── scripts/
@@ -38,22 +63,46 @@ Use this structure:
 └── assets/
 ```
 
-## If you change the repo structure
-When renaming, adding, or removing files or folders:
-- update the relevant examples
-- update the explanations
-- keep Claude-side and GitHub-side concepts clearly separated
+Keep the skill:
 
-## Validation
+- practical
+- focused on one workflow
+- easy to scan
+- based on real use, not filler
+
+## If you change hooks or hook-related scripts
+
+Keep hooks:
+
+- deterministic
+- low-risk
+- small
+- easy to inspect
+
+Do not use hooks for long reasoning or fuzzy decisions.
+
+## Validation checklist
+
 Before opening a pull request:
-- check that referenced files still exist
-- make sure the repo still teaches the same structure it actually contains
 
-## Pull requests
+- check that referenced files and links still exist
+- make sure examples still match the real repo
+- make sure new folders follow the documented structure
+- run `bash .claude/skills/validate-learning-repo/scripts/check-required-files.sh`
+
+If hook-related files changed, also check:
+
+- `bash scripts/hooks/claude-session-context.sh`
+- `bash scripts/hooks/github-session-start-check.sh`
+
+## Pull request checklist
+
 In your pull request, explain:
+
 - what changed
 - why it changed
-- whether it affects `.claude/`, `.github/`, `skills/`, or root instruction files
+- whether it affects Claude, Copilot, shared skills, or root instruction files
 
-## Questions
-If something is unclear, open an issue first before making a large structural change.
+## Large changes
+
+Open an issue first if the change is large, structural, or likely to affect multiple AI layers.
