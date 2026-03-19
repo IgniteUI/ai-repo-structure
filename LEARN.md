@@ -29,6 +29,7 @@ This course is written to be simple:
 
 - [What you are building](#what-you-are-building)
 - [The simple rule before any AI file](#the-simple-rule-before-any-ai-file)
+- [Decision table: when to use what](#decision-table-when-to-use-what)
 - [Module 1 — README.md](#module-1--readmemd)
 - [Module 2 — AGENTS.md](#module-2--agentsmd)
 - [Module 3 — CLAUDE.md](#module-3--claudemd)
@@ -97,6 +98,38 @@ Before you add any AI-related file, answer these four questions:
    - if no, split it by job
 
 That one habit will keep the repo clean.
+
+---
+
+## Decision table: when to use what
+
+If you only remember one thing from this repo, remember this split:
+
+- use always-on instruction files for broad repo rules
+- use file-based instructions for scoped rules
+- use custom agents for specialist roles, handoffs, or tool restrictions
+- use skills for reusable workflows with steps, scripts, or supporting resources
+- use hooks only for small deterministic automation
+
+| Use this | When to use it | Best for | Do not use it for |
+| --- | --- | --- | --- |
+| `AGENTS.md` | When a rule should apply to coding agents across the whole repo | shared repo commands, conventions, workflow rules, boundaries | Claude-only behavior, GitHub-only behavior, long step-by-step workflows |
+| `CLAUDE.md` | When Claude needs always-on project guidance beyond the shared agent baseline | Claude priorities, Claude-specific structure, when Claude should use its rules, agents, skills, or hooks | general repo rules that already belong in `AGENTS.md`, GitHub/Copilot-only instructions |
+| `.github/copilot-instructions.md` | When GitHub Copilot needs broad repo-wide instructions across most tasks | Copilot-wide editing behavior, shared patterns, test/lint expectations, approval boundaries | file-specific rules, one-off workflows, Claude-only guidance |
+| `.instructions.md` | When guidance should apply only to specific files or folders | path-scoped writing rules, test-file rules, docs-only rules, language- or folder-specific conventions | repo-wide policy, specialist personas, reusable multi-step workflows |
+| custom agents | When you want a persistent specialist role with a clear job, voice, tool set, or handoff target | review agents, maintainer agents, docs agents, constrained tool access, repeatable delegation | broad always-on repo rules, small one-file instructions, generic workflows that do not need a persona |
+| skills | When a task is reusable, multi-step, and benefits from `SKILL.md`, scripts, references, or assets | onboarding flows, repo validation, PR review workflows, adoption guides | tiny universal rules, always-on behavior, pure persona definition |
+| hooks | When a supported runtime should run a small deterministic action automatically at a known event | session-start checks, safe context injection, lightweight validation, formatting | subjective review, long reasoning, hidden non-deterministic behavior |
+
+Short version:
+
+- `AGENTS.md` = shared always-on rules for coding agents
+- `CLAUDE.md` = Claude-only always-on rules
+- `.github/copilot-instructions.md` = Copilot-only always-on rules
+- `.instructions.md` = scoped rules for certain files
+- custom agents = specialist roles
+- skills = reusable workflows
+- hooks = automatic deterministic actions
 
 ---
 

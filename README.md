@@ -101,6 +101,7 @@ Want the guided version instead of just the structure?
 Read [`LEARN.md`](./learn.md) for a short course that explains:
 
 - what each AI layer is for
+- a decision table for when to use each instruction type
 - how the files relate to each other
 - best practices for writing them
 - templates you can copy
