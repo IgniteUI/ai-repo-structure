@@ -7,7 +7,10 @@ They are shared, user-facing skills.
 ## Available skills
 
 ### `use-this-repo`
-Use this skill to understand the repository, learn what each AI layer is for, and adapt the structure to your own project.
+Use this skill to understand the repository, learn what each AI layer is for, and navigate the real structure in this repo.
+
+### `adopt-this-repo`
+Use this skill to turn this repository structure into a practical adoption plan for another project, including what to copy, adapt, or skip.
 
 ## Layering
 - internal Claude maintainer skills live in `.claude/skills/`

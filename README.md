@@ -72,6 +72,7 @@ It shows how to combine:
       - [`.github/skills/review-learning-repo-pr/`](#githubskillsreview-learning-repo-pr)
   - [Shared external skills](#shared-external-skills)
     - [`skills/use-this-repo/`](#skillsuse-this-repo)
+    - [`skills/adopt-this-repo/`](#skillsadopt-this-repo)
   - [Support scripts](#support-scripts)
     - [`scripts/hooks/`](#scriptshooks)
   - [What hooks are doing here](#what-hooks-are-doing-here)
@@ -197,14 +198,24 @@ ai-repo-structure/
 │  └─ copilot-instructions.md                    # Main repo-wide GitHub Copilot instructions
 │
 ├─ skills/                                       # External/shared skills for users of the repo and outside agents
-│  └─ use-this-repo/                             # Main external skill for understanding and adopting this repo
-│     ├─ assets/                                 # Reusable templates for user-facing outputs
-│     │  └─ adoption-plan-template.md            # Template for suggesting how someone should adopt this repo
-│     ├─ references/                             # Supporting docs for understanding the repo
-│     │  └─ repo-map.md                          # Explanation of the repo layers and what each one is for
-│     ├─ scripts/                                # Helper scripts for external/shared usage
-│     │  └─ quickstart-check.sh                  # Script that checks whether the expected starter structure exists
-│     └─ SKILL.md                                # Main external skill definition for using this repo as a guide
+│  ├─ use-this-repo/                             # Shared skill for understanding the repo structure and layers
+│  │  ├─ assets/                                 # Reusable templates for user-facing outputs
+│  │  │  └─ adoption-plan-template.md            # Template for suggesting how someone should adopt this repo
+│  │  ├─ references/                             # Supporting docs for understanding the repo
+│  │  │  └─ repo-map.md                          # Explanation of the repo layers and what each one is for
+│  │  ├─ scripts/                                # Helper scripts for external/shared usage
+│  │  │  └─ quickstart-check.sh                  # Script that checks whether the expected starter structure exists
+│  │  └─ SKILL.md                                # Main shared skill definition for understanding the repo
+│  └─ adopt-this-repo/                           # Shared skill for adopting this AI structure into another project
+│     ├─ assets/                                 # Reusable templates for adoption output
+│     │  └─ adoption-plan-template.md            # Template for producing a practical adoption plan
+│     ├─ references/                             # Supporting docs for adoption decisions
+│     │  ├─ repo-map.md                          # Summary of the repo layers and their jobs
+│     │  ├─ adoption-levels.md                   # Minimal, practical, and full adoption levels
+│     │  └─ copy-vs-adapt.md                     # What to copy, adapt, rename, or skip
+│     ├─ scripts/                                # Helper scripts for adoption checks
+│     │  └─ quickstart-check.sh                  # Optional script for checking a target repo's starter structure
+│     └─ SKILL.md                                # Main shared skill definition for adoption planning
 │
 ├─ docs/                                         # Public documentation site for GitHub Pages and Google indexing
 │  ├─ _config.yml                                # GitHub Pages / Jekyll site configuration 
@@ -386,7 +397,7 @@ This is the external/shared layer.
 Unlike `.claude/` and `.github/`, this layer is mainly for users of the repo and outside agents.
 
 ### [`skills/use-this-repo/`](./skills/use-this-repo)
-The main shared skill for understanding and adopting this repository.
+The shared skill for understanding this repository and its layers.
 
 One level deeper:
 
@@ -404,6 +415,33 @@ One level deeper:
   Helper scripts for shared usage.
 - `scripts/quickstart-check.sh`  
   Checks whether the expected starter structure exists.
+
+- `SKILL.md`  
+  The main shared skill definition.
+
+### [`skills/adopt-this-repo/`](./skills/adopt-this-repo)
+The shared skill for adopting this repository structure into another project.
+
+One level deeper:
+
+- `assets/`  
+  Reusable output pieces for adoption planning.
+- `assets/adoption-plan-template.md`  
+  A template for the final adoption plan.
+
+- `references/`  
+  Supporting docs for adoption decisions.
+- `references/repo-map.md`  
+  A short summary of the repo layers and what they are for.
+- `references/adoption-levels.md`  
+  Defines minimal, practical, and full adoption levels.
+- `references/copy-vs-adapt.md`  
+  Explains what to copy as-is, adapt, rename, or skip.
+
+- `scripts/`  
+  Helper scripts for optional adoption checks.
+- `scripts/quickstart-check.sh`  
+  Checks a target repo for a few basic starter files and AI-related paths.
 
 - `SKILL.md`  
   The main shared skill definition.
@@ -482,7 +520,7 @@ It already has:
 - one GitHub instruction set
 - one GitHub agent
 - one GitHub skill
-- one external shared skill
+- two external shared skills
 - one optional hook on each side
 
 That means the repo is already more than an idea.  
