@@ -3,8 +3,10 @@ set -euo pipefail
 
 required_files=(
   "README.md"
+  "LEARN.md"
   "CLAUDE.md"
   "AGENTS.md"
+  "CONTRIBUTING.md"
   ".github/copilot-instructions.md"
   ".claude/settings.json"
 )

@@ -34,6 +34,7 @@ It shows how to combine:
 
 - shared agent instructions with [`AGENTS.md`](./AGENTS.md)
 - Claude-specific guidance with [`CLAUDE.md`](./CLAUDE.md)
+- contributor workflow guidance with [`CONTRIBUTING.md`](./CONTRIBUTING.md)
 - internal Claude rules, agents, skills, and hooks in [`.claude/`](./.claude)
 - internal GitHub Copilot instructions, agents, skills, and optional Copilot coding agent hooks in [`.github/`](./.github)
 - external/shared skills in [`skills/`](./skills)
@@ -57,6 +58,7 @@ It shows how to combine:
     - [`README.md`](#readmemd)
     - [`AGENTS.md`](#agentsmd)
     - [`CLAUDE.md`](#claudemd)
+    - [`CONTRIBUTING.md`](#contributingmd)
   - [Internal Claude layer](#internal-claude-layer)
     - [`.claude/agents/`](#claudeagents)
     - [`.claude/rules/`](#clauderules)
@@ -99,7 +101,7 @@ This repo is for:
 
 Want the guided version instead of just the structure?
 
-Read [`LEARN.md`](./learn.md) for a short course that explains:
+Read [`LEARN.md`](./LEARN.md) for a short course that explains:
 
 - what each AI layer is for
 - a decision table for when to use each instruction type
@@ -133,26 +135,28 @@ So this repo has three jobs at the same time:
 A simple reading order is:
 
 1. [`README.md`](./README.md)
-2. [`AGENTS.md`](./AGENTS.md)
-3. [`CLAUDE.md`](./CLAUDE.md)
-4. [`.claude/`](./.claude)
-5. [`.github/`](./.github)
-6. [`skills/`](./skills)
-7. [`scripts/hooks/`](./scripts/hooks)
-8. [`LEARN.md`](./LEARN.md)
+2. [`LEARN.md`](./LEARN.md)
+3. [`AGENTS.md`](./AGENTS.md)
+4. [`CLAUDE.md`](./CLAUDE.md)
+5. [`CONTRIBUTING.md`](./CONTRIBUTING.md)
+6. [`.claude/`](./.claude)
+7. [`.github/`](./.github)
+8. [`skills/`](./skills)
+9. [`scripts/hooks/`](./scripts/hooks)
 
 ---
 
 ## How the AI layers connect
 
 - `README.md` introduces the repo and points people to the right places.
+- `LEARN.md` is the guided course for understanding and copying the system.
 - `AGENTS.md` gives shared guidance for coding agents.
 - `CLAUDE.md` gives Claude project-specific context.
+- `CONTRIBUTING.md` explains how to make changes without breaking the repo's teaching value.
 - `.claude/` contains Claude-only maintainer pieces.
 - `.github/` contains GitHub/Copilot-only maintainer pieces.
 - `skills/` contains shared reusable workflows.
 - `scripts/hooks/` supports hook automation for Claude and GitHub/Copilot.
-- `LEARN.md` is the guided course for understanding and copying the system.
   
 ![diagram](./public/assets/mermaid-diagram.png)
 
@@ -238,6 +242,7 @@ ai-repo-structure/
 |
 ├─ AGENTS.md                                     # Shared agent-facing instructions for coding agents working in the repo
 ├─ CLAUDE.md                                     # Main Claude-specific project guidance
+├─ CONTRIBUTING.md                               # Contributor workflow guidance for keeping the repo accurate and aligned
 ├─ LEARN.md                                      # Course for understanding and copying the system
 └─ README.md                                     # Main human entry point; will become the learning guide/course for the repo
 ```
@@ -277,6 +282,15 @@ It tells Claude:
 - how the repo is organized
 - what conventions matter
 - how to work safely in this project
+
+### [`CONTRIBUTING.md`](./CONTRIBUTING.md)
+The contributor guide for the project.
+
+It explains:
+
+- how to prepare before making changes
+- what a good small contribution looks like
+- what to validate before opening a pull request
 
 ---
 

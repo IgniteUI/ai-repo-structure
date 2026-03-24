@@ -28,6 +28,9 @@ A shared instruction file for coding agents.
 ### `CLAUDE.md`
 Claude-specific project guidance.
 
+### `CONTRIBUTING.md`
+Contributor guidance for keeping the repo structure and teaching content aligned.
+
 ## Internal Claude layer
 
 ### `.claude/rules/`
