@@ -4,5 +4,5 @@ theme: minima
 markdown: kramdown
 plugins:
   - jekyll-sitemap
-url: "https://georgianastasov.github.io"
+url: "https://igniteui.github.io"
 baseurl: "/ai-repo-structure"

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://georgianastasov.github.io/ai-repo-structure/sitemap.xml
+Sitemap: https://igniteui.github.io/ai-repo-structure/sitemap.xml
