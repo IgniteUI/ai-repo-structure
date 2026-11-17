@@ -1,20 +1,18 @@
 <div align="center">
 
-<img src="./public/assets/avatar.png" alt="ai-repo-structure avatar" width="260" height="260" />
+  <img src="./public/assets/igniteui.svg" alt="Ignite UI" width="100%" />
 
-# ai-repo-structure
+  # AI Repo Structure - Build AI-Ready Repositories
 
-**A working reference for structuring AI-enabled repositories:**  
-**`AGENTS.md`, `CLAUDE.md`, instructions, custom agents, skills, and hooks, each in the right place.**
+  **A working reference for structuring AI-enabled repositories:**  
+  **`AGENTS.md`, `CLAUDE.md`, instructions, custom agents, skills, and hooks, each in the right place.**
 
-<br/>
+  [![GitHub stars](https://img.shields.io/github/stars/IgniteUI/ai-repo-structure?style=for-the-badge&logo=github&label=Star%20the%20Repo)](https://github.com/IgniteUI/ai-repo-structure)
+  [![MIT License](https://img.shields.io/badge/Open%20Source-MIT-22c55e?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](./LICENSE)
+  [![Learning Course](https://img.shields.io/badge/Learning-Course-2563eb?style=for-the-badge&logo=bookstack&logoColor=white)](./LEARN.md)
+  [![Live Docs](https://img.shields.io/badge/Explore-Live%20Docs-7c3aed?style=for-the-badge&logo=readthedocs&logoColor=white)](https://igniteui.github.io/ai-repo-structure/)
 
-[![GitHub stars](https://img.shields.io/github/stars/IgniteUI/ai-repo-structure?style=for-the-badge&logo=github&label=Star%20the%20Repo)](https://github.com/IgniteUI/ai-repo-structure)
-[![MIT License](https://img.shields.io/badge/Open%20Source-MIT-22c55e?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](./LICENSE)
-[![Learning Course](https://img.shields.io/badge/Learning-Course-2563eb?style=for-the-badge&logo=bookstack&logoColor=white)](./LEARN.md)
-[![Live Docs](https://img.shields.io/badge/Explore-Live%20Docs-7c3aed?style=for-the-badge&logo=readthedocs&logoColor=white)](https://igniteui.github.io/ai-repo-structure/)
-
-[Course](./LEARN.md) · [Docs site](https://igniteui.github.io/ai-repo-structure/) · [Quick start](#quick-start) · [Contributing](./CONTRIBUTING.md)
+  [Course](./LEARN.md) · [Docs site](https://igniteui.github.io/ai-repo-structure/) · [Quick start](#quick-start) · [Contributing](./CONTRIBUTING.md)
 
 </div>
 
@@ -208,9 +206,8 @@ ai-repo-structure/
 │
 ├─ public/                                       # Static assets used by the docs
 │  └─ assets/
-│     ├─ avatar.png                              # Repository avatar
-│     ├─ mermaid-diagram.png                     # Diagram of how the AI layers connect
-│     └─ repo-structure.png                      # Illustration used in LEARN.md
+│     ├─ igniteui.svg                            # Repository svg
+│     └─ mermaid-diagram.png                     # Diagram of how the AI layers connect
 │
 ├─ scripts/                                      # Shared repo utility scripts
 │  └─ hooks/                                     # Helper scripts used by Claude and GitHub/Copilot hooks

@@ -21,10 +21,6 @@ This course is written to be simple:
 
 ---
 
-![structure](./public/assets/repo-structure.png)
-
----
-
 ## Quick navigation
 
 - [What you are building](#what-you-are-building)
