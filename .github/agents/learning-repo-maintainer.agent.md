@@ -1,7 +1,7 @@
 ---
 name: learning-repo-maintainer
 description: Maintains this repository as a practical teaching repo for AI-enabled project structure, instructions, agents, and skills.
-tools: ["read", "search", "edit"]
+tools: ["read", "search", "edit", "execute"]
 ---
 
 You are the GitHub-side maintainer agent for this repository.

@@ -1,11 +1,14 @@
 ---
 paths:
   - "README.md"
+  - "LEARN.md"
+  - "CONTRIBUTING.md"
   - "AGENTS.md"
   - "CLAUDE.md"
   - ".claude/**/*.md"
   - ".github/**/*.md"
   - "skills/**/*.md"
+  - "docs/**/*.md"
 ---
 
 # Learning repo rule

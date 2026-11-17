@@ -10,17 +10,15 @@ fi
 
 must_have_paths=(
   "README.md"
-  "src"
-)
-
-good_to_have_paths=(
-  "docs"
   "AGENTS.md"
 )
 
+good_to_have_paths=(
+  ".claude/rules"
+  ".github/instructions"
+)
+
 optional_paths=(
-  "CLAUDE.md"
-  ".github/copilot-instructions.md"
   "skills"
 )
 
@@ -48,6 +46,17 @@ echo "Checking target repo: $target"
 echo
 
 check_group "Must-have" "${must_have_paths[@]}"
+
+# Minimal level needs one always-on file for the tool in use.
+echo "Must-have (one of)"
+if [ -e "$target/CLAUDE.md" ] || [ -e "$target/.github/copilot-instructions.md" ]; then
+  echo "OK: CLAUDE.md or .github/copilot-instructions.md"
+else
+  echo "MISSING: CLAUDE.md or .github/copilot-instructions.md"
+  missing_must_have=1
+fi
+echo
+
 check_group "Good-to-have" "${good_to_have_paths[@]}"
 check_group "Optional" "${optional_paths[@]}"
 

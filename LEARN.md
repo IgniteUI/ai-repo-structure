@@ -453,6 +453,8 @@ Use a rule when some guidance should be:
 - easier to maintain separately
 - applied to one concern only
 
+Scope a rule with `paths` frontmatter. A rule without `paths` loads in every session, like `CLAUDE.md`. A rule with `paths` loads only when Claude works with matching files.
+
 ## What the description is for
 
 The rule description should make the rule’s job obvious.
@@ -481,6 +483,11 @@ Avoid:
 ## Template
 
 ```md
+---
+paths:
+  - "<glob pattern>"
+---
+
 # <rule-name>
 
 ## Purpose
@@ -501,6 +508,11 @@ Explain the scope.
 ## Real example
 
 ```md
+---
+paths:
+  - "**/*.md"
+---
+
 # review-quality
 
 ## Purpose
@@ -640,7 +652,7 @@ The skill description should help someone understand:
 - when to use it
 - what output to expect
 
-In practice, the most important description often lives at the top of `SKILL.md`.
+This description lives in the required `description` field of the `SKILL.md` frontmatter, next to `name`. Agents read it to decide when to load the skill.
 
 ## Best practice
 
@@ -661,6 +673,11 @@ A good skill folder often contains:
 ## Template
 
 ```md
+---
+name: <skill-name>
+description: <What the workflow does and what it produces>. Use when <situation>.
+---
+
 # <skill-name>
 
 ## Purpose
@@ -691,6 +708,11 @@ Describe the final output.
 ## Real example
 
 ```md
+---
+name: review-doc-and-structure
+description: Reviews documentation and structure changes for clarity, consistency, and alignment with the real repository. Use when docs, file trees, or setup examples change.
+---
+
 # review-doc-and-structure
 
 ## Purpose
@@ -832,7 +854,7 @@ Bad uses:
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/hooks/claude-session-context.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/scripts/hooks/claude-session-context.sh"
           }
         ]
       }
@@ -934,7 +956,7 @@ Path-specific instructions are for rules that only apply to certain files or fol
 
 Use them when repo-wide instructions would be too broad.
 
-This is one of the clearest GitHub-side differences from the Claude model: GitHub has a built-in path-targeting pattern here, so you can scope guidance by file glob instead of pushing everything into one always-on file.
+GitHub uses the `applyTo` frontmatter to target files by glob, so you can scope guidance instead of pushing everything into one always-on file. It plays the same role as `paths` in Claude rules.
 
 ## What the description is for
 
@@ -1089,7 +1111,7 @@ The GitHub side differs from the Claude side less in structure than in emphasis:
 
 ## What the description is for
 
-At the top of `SKILL.md`, the description should explain:
+In the `SKILL.md` frontmatter, the required `description` field should explain:
 
 - what the workflow does
 - when it should load
@@ -1113,6 +1135,11 @@ Use a skill instead of repo-wide instructions when the workflow is:
 ## Template
 
 ```md
+---
+name: <skill-name>
+description: <What the workflow does and what it produces>. Use when <situation>.
+---
+
 # <skill-name>
 
 ## Purpose
@@ -1138,6 +1165,11 @@ What the result should look like.
 ## Real example
 
 ```md
+---
+name: review-test-changes
+description: Reviews changed test files for coverage, clarity, and maintainability. Use when a pull request adds or changes tests.
+---
+
 # review-test-changes
 
 ## Purpose
@@ -1246,14 +1278,14 @@ Do not use hooks for:
 
 ```json
 {
-  "version": "<version>",
+  "version": 1,
   "hooks": {
     "sessionStart": [
       {
-        "type": "<command>",
-        "bash": "<path to the hook>",
-        "cwd": "<.>",
-        "timeoutSec": "<number in sec>"
+        "type": "command",
+        "bash": "bash <path to the hook script>",
+        "cwd": ".",
+        "timeoutSec": 10
       }
     ]
   }
@@ -1269,7 +1301,7 @@ Do not use hooks for:
     "sessionStart": [
       {
         "type": "command",
-        "bash": "./scripts/hooks/github-session-start-check.sh",
+        "bash": "bash ./scripts/hooks/github-session-start-check.sh",
         "cwd": ".",
         "timeoutSec": 10
       }
@@ -1278,7 +1310,7 @@ Do not use hooks for:
 }
 ```
 
-This repo uses `sessionStart` for a small project-state check. It validates that core guidance files such as `README.md`, `AGENTS.md`, `CLAUDE.md`, and `.github/copilot-instructions.md` still exist. That is safer than pretending GitHub hooks inject hidden repository context.
+This repo uses `sessionStart` for a small project-state check. It validates that core guidance files such as `README.md`, `AGENTS.md`, `CLAUDE.md`, and `.github/copilot-instructions.md` still exist. The script writes only to stderr, so it adds nothing to the agent's context. A `sessionStart` hook can inject context by printing JSON with an `additionalContext` field.
 
 ---
 
@@ -1318,6 +1350,11 @@ Do not create many fake skills just to fill the tree.
 ## Template
 
 ```md
+---
+name: <shared-skill-name>
+description: <What the workflow helps someone do and what they get>. Use when <situation>.
+---
+
 # <shared-skill-name>
 
 ## Purpose
@@ -1339,6 +1376,11 @@ What the user gets.
 ## Real example
 
 ```md
+---
+name: add-ai-foundation
+description: Helps a team add the basic AI-ready file structure to an existing repository and produces a short adoption plan. Use when a repo has no shared agent instructions yet or wants to add Claude and GitHub/Copilot structure gradually.
+---
+
 # add-ai-foundation
 
 ## Purpose
