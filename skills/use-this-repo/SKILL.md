@@ -17,6 +17,8 @@ It demonstrates:
 - Claude-specific project guidance in `CLAUDE.md`
 - internal Claude rules, agents, and skills in `.claude/`
 - internal GitHub/Copilot instructions, agents, and skills in `.github/`
+- internal Codex agents and hooks in `.codex/`
+- cross-agent skills that Codex and Copilot discover automatically in `.agents/skills/`
 - external/shared user-facing skills in `skills/`
 
 ## Workflow
@@ -27,6 +29,8 @@ It demonstrates:
    - root files
    - `.claude/`
    - `.github/`
+   - `.codex/`
+   - `.agents/skills/`
    - `skills/`
 4. If the user wants to copy or adapt the structure, hand off to the `adopt-this-repo` skill.
 
@@ -41,6 +45,8 @@ Always:
 
 - `.claude/` = internal Claude setup for maintainers
 - `.github/` = internal GitHub/Copilot setup for maintainers
-- `skills/` = external/shared skills for users and outside agents
+- `.codex/` = internal Codex setup for maintainers
+- `.agents/skills/` = cross-agent maintainer skills, discovered automatically by Codex and Copilot
+- `skills/` = external/shared skills for users and outside agents, not loaded automatically
 
 Do not mix those layers together.

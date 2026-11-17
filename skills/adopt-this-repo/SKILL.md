@@ -14,7 +14,7 @@ Keep the result concrete and biased toward the smallest useful setup.
 1. Read `references/repo-map.md` for the layer overview.
 2. Read `references/adoption-levels.md` and default to the smallest useful level.
 3. Read `references/copy-vs-adapt.md` to sort items into copy as-is, adapt, rename, or skip.
-4. If a target repository is available, inspect it and optionally run `scripts/quickstart-check.sh <target-path>`.
+4. If a target repository is available, inspect it and optionally run `scripts/quickstart-check.sh <target-path>`. For a repo that uses only Codex, run `scripts/quickstart-check.sh <target-path> --codex-only`.
 5. Produce the final answer with `assets/adoption-plan-template.md`.
 
 ## Output requirements

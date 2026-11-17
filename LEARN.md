@@ -26,6 +26,7 @@ This course is written to be simple:
 - [What you are building](#what-you-are-building)
 - [The simple rule before any AI file](#the-simple-rule-before-any-ai-file)
 - [Decision table: when to use what](#decision-table-when-to-use-what)
+- [Cross-agent compatibility](#cross-agent-compatibility)
 - [Module 1 — README.md](#module-1--readmemd)
 - [Module 2 — AGENTS.md](#module-2--agentsmd)
 - [Module 3 — CLAUDE.md](#module-3--claudemd)
@@ -40,6 +41,9 @@ This course is written to be simple:
 - [Module 12 — GitHub Copilot hooks](#module-12--github-copilot-hooks)
 - [Module 13 — Shared skills](#module-13--shared-skills)
 - [Module 14 — Hook support scripts](#module-14--hook-support-scripts)
+- [Module 15 — Codex custom agents](#module-15--codex-custom-agents)
+- [Module 16 — Codex hooks](#module-16--codex-hooks)
+- [Module 17 — Cross-agent skills](#module-17--cross-agent-skills)
 - [A good rollout order](#a-good-rollout-order)
 - [Common mistakes](#common-mistakes)
 - [One-sentence summary](#one-sentence-summary)
@@ -54,6 +58,8 @@ By the end, you should be able to build a repo with:
 - Claude-specific project context in `CLAUDE.md`
 - internal Claude rules, agents, skills, and hooks in `.claude/`
 - internal GitHub Copilot instructions, agents, skills, and optional Copilot hooks in `.github/`
+- internal Codex agents and hooks in `.codex/`
+- cross-agent skills that Codex and Copilot discover automatically in `.agents/skills/`
 - external/shared skills in `skills/`
 
 The main idea is simple:
@@ -74,6 +80,7 @@ Before you add any AI-related file, answer these four questions:
    - all agents
    - Claude only
    - GitHub/Copilot only
+   - Codex only
    - maintainers only
    - outside users
 
@@ -133,6 +140,30 @@ This repo does not configure MCP (Model Context Protocol) servers, but this is w
 
 - Claude Code: `.mcp.json` at the repo root, committed and shared. Claude asks for approval before using project servers, and `${VAR}` expansion keeps secrets out of the file.
 - GitHub Copilot: `.vscode/mcp.json` in VS Code, `.mcp.json` or `.github/mcp.json` in Copilot CLI, repository settings on GitHub.com for cloud agent and code review, or `mcp-servers` in a custom agent profile.
+- OpenAI Codex: `[mcp_servers.<name>]` tables in `config.toml`, either `~/.codex/config.toml` or `.codex/config.toml` in a trusted project.
+
+---
+
+## Cross-agent compatibility
+
+The same job lives in a different place for each tool. This table shows where Claude Code, GitHub Copilot, and OpenAI Codex look for each kind of file, based on their official docs.
+
+| Job | Claude Code | GitHub Copilot | OpenAI Codex |
+| --- | --- | --- | --- |
+| Config folder | `.claude/` | `.github/` | `.codex/` |
+| Reads `AGENTS.md` | Only when there is no `CLAUDE.md`; otherwise import it with `@AGENTS.md` | Yes; the nearest file wins | Yes; joins files from the repo root down to the current folder, up to 32 KiB by default |
+| Tool-specific always-on file | `CLAUDE.md` | `.github/copilot-instructions.md` | none; `AGENTS.override.md` replaces `AGENTS.md` in a folder |
+| Path-scoped guidance | `.claude/rules/*.md` with `paths` | `.github/instructions/*.instructions.md` with `applyTo` | nested `AGENTS.md` files |
+| Project skills | `.claude/skills/` | `.github/skills/`, `.claude/skills/`, or `.agents/skills/` | `.agents/skills/`, from the current folder up to the repo root |
+| Custom agents | `.claude/agents/*.md` | `.github/agents/*.agent.md` | `.codex/agents/*.toml` |
+| Hooks | `.claude/settings.json` | `.github/hooks/*.json` | `.codex/hooks.json` |
+| Session-start output | plain stdout becomes context | only JSON `additionalContext` becomes context | plain stdout becomes developer context |
+| MCP config | `.mcp.json` | depends on the surface (see above) | `config.toml` |
+
+Two practical consequences:
+
+- One skill in `.agents/skills/` reaches both Codex and Copilot. Claude Code needs it in `.claude/skills/`, or a pointer to the `SKILL.md`.
+- One `AGENTS.md` reaches all three tools. Keep shared rules there and only tool-specific guidance in each tool's own file.
 
 ---
 
@@ -292,6 +323,8 @@ Avoid:
 In a monorepo, add an `AGENTS.md` inside a package or folder that needs different rules. Agents read the nearest file in the directory tree, so the closest one takes precedence, and an explicit instruction in the chat overrides them all.
 
 Claude Code supports nested `CLAUDE.md` files too. It loads one when it reads or edits files in that folder, and adds it to the context instead of replacing the root file.
+
+Codex reads at most one file per folder, from the repository root down to your current folder, and joins them so the closest instructions come last. An `AGENTS.override.md` in a folder replaces that folder's `AGENTS.md`. Codex stops adding files at 32 KiB by default (`project_doc_max_bytes`), which is one more reason to keep `AGENTS.md` short.
 
 ## Template
 
@@ -902,7 +935,7 @@ This repo keeps its secrets boundary as guidance in `AGENTS.md`. The snippet sho
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR\"/scripts/hooks/claude-session-context.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/scripts/hooks/session-start-context.sh"
           }
         ]
       }
@@ -1372,7 +1405,9 @@ This repo uses `sessionStart` for a small project-state check. It validates that
 
 The top-level `skills/` folder is the external/shared layer.
 
-It is a distribution layer: coding agents do not load it automatically. To use a skill, copy it into `.claude/skills/` or `.github/skills/`, or point an agent at its `SKILL.md`.
+It is a distribution layer: coding agents do not load it automatically. To use a skill, copy it into `.claude/skills/`, `.github/skills/`, or `.agents/skills/`, or point an agent at its `SKILL.md`.
+
+For skills that agents should discover automatically while working in this repository, use `.agents/skills/` instead. See [Module 17](#module-17--cross-agent-skills).
 
 Use it for workflows that are useful to:
 
@@ -1541,16 +1576,244 @@ echo "Short safe context goes here"
 
 ## Real example
 
+This repo's `scripts/hooks/session-start-context.sh`, shared by the Claude Code and Codex hooks:
+
 ```bash
 #!/usr/bin/env bash
+set -euo pipefail
 
-echo "Repository orientation:"
-echo "- Source code: src/"
-echo "- Tests: tests/"
-echo "- Docs: docs/"
-echo "- Claude internals: .claude/"
-echo "- GitHub/Copilot internals: .github/"
-echo "- Shared skills: skills/"
+# Shared by the Claude Code and Codex SessionStart hooks. Instruction files already
+# load every session, so only add the live check result.
+cd "${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}"
+
+if result="$(bash .claude/skills/validate-learning-repo/scripts/check-required-files.sh)"; then
+  echo "Session-start check passed: required repo files and AGENTS.md commands are present."
+else
+  echo "Session-start check failed:"
+  echo "$result" | grep '^MISSING' || true
+  echo "Fix these before relying on the repo guidance."
+fi
+```
+
+---
+
+# Module 15 — Codex custom agents
+
+## What this file is for
+
+Codex custom agents are specialist roles, like Claude and GitHub agents. Each one is a TOML file in `.codex/agents/`.
+
+### Why `.codex/`
+
+`.codex/` is Codex's project configuration folder. It is the repo-level counterpart of the Codex home folder, `~/.codex`. It holds Codex-only files: custom agents in `agents/`, hooks in `hooks.json`, and settings in `config.toml`. It plays the same role as `.claude/` for Claude Code and `.github/` for Copilot.
+
+This repo has no `.codex/config.toml`. Codex finds `.codex/agents/` and `.codex/hooks.json` without one. Add it only when you need Codex settings, such as MCP servers.
+
+## What the description is for
+
+The `description` tells Codex and the user when to use the agent. Codex starts a custom agent after a direct request or an instruction in the project or a skill, for example: "Have learning_repo_maintainer check the README tree."
+
+## Best practice
+
+- Every agent file needs `name`, `description`, and `developer_instructions`.
+- Codex identifies the agent by `name`, not by file name. Match them anyway; it is the simplest convention.
+- The official examples use underscores in `name`, such as `pr_explorer`. This repo follows them with `learning_repo_maintainer`, while the Claude and Copilot agents use hyphens.
+- `model` and `model_reasoning_effort` are optional. Leave them out to inherit the session settings.
+- Instructions can ask an agent not to edit files, but they do not create a read-only sandbox. An agent file cannot override settings such as `sandbox_mode` or `approval_policy`.
+
+## Template
+
+```toml
+name = "<agent_name>"
+description = "<Specialty>. Use when <situation>."
+developer_instructions = """
+You are a specialist for <job>.
+
+Focus on:
+- point
+- point
+
+Do not:
+- anti-pattern
+"""
+```
+
+## Real example
+
+This repo's `.codex/agents/learning_repo_maintainer.toml`:
+
+```toml
+name = "learning_repo_maintainer"
+description = "Maintains this repository as a real teaching repo for AI-enabled project structure. Use for changes to README.md, LEARN.md, AGENTS.md, CLAUDE.md, .claude/, .github/, .codex/, .agents/, or skills/."
+developer_instructions = """
+You are the Codex maintainer agent for this repository.
+
+Your job is to keep this repo accurate, concrete, and internally consistent as a learning resource.
+
+Focus areas:
+1. Keep the real repository structure aligned with any examples shown in markdown files.
+2. Keep the Claude Code, GitHub Copilot, and Codex layers conceptually aligned without forcing them to be identical.
+3. Prefer official, supported conventions over made-up patterns.
+4. Keep teaching content practical: short examples, real file names, realistic workflows.
+
+When a change touches one tool layer, use the sync-agent-layers skill to find its counterparts.
+
+Before finishing, run `bash .claude/skills/validate-learning-repo/scripts/check-required-files.sh` and fix anything it reports as missing.
+"""
+```
+
+---
+
+# Module 16 — Codex hooks
+
+## What this file is for
+
+`.codex/hooks.json` runs small commands at known Codex events, such as `SessionStart`, `PreToolUse`, or `Stop`. The format is close to Claude Code's: each event holds matcher groups, and each group holds command handlers.
+
+## What the description is for
+
+The description around a hook should explain:
+
+- which event triggers it
+- what it does
+- why it is safe
+
+## Best practice
+
+- For `SessionStart`, the matcher filters on how the session started: `startup`, `resume`, `clear`, `compact`, or `fork`.
+- Plain text on stdout is added to Codex's context as developer context.
+- `timeout` is in seconds. Without it, most hooks get 600 seconds.
+- Commands run in the session's working directory, which can be a subfolder. The docs list no project-folder variable for repository hooks, and their examples resolve repo paths with `git rev-parse --show-toplevel`.
+- Project hooks load only when the project's `.codex/` layer is trusted, and Codex asks you to review and trust each hook definition before it runs. Use `/hooks` in the CLI to review them.
+- On Windows, an optional `commandWindows` field replaces `command`.
+
+## Template
+
+```json
+{
+  "hooks": {
+    "<EventName>": [
+      {
+        "matcher": "<matcher>",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "<safe shell command>",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Real example
+
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$(git rev-parse --show-toplevel)/scripts/hooks/session-start-context.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Claude Code and Codex share `scripts/hooks/session-start-context.sh`. It runs the repo check and prints one line, which both tools add to the context.
+
+---
+
+# Module 17 — Cross-agent skills
+
+## What this file is for
+
+`.agents/skills/` holds skills that coding agents discover automatically while they work in this repository. No single tool owns it:
+
+- Codex scans `.agents/skills` in every folder from the current folder up to the repository root.
+- GitHub Copilot reads project skills from `.github/skills/`, `.claude/skills/`, or `.agents/skills/`.
+- Claude Code reads project skills only from `.claude/skills/`, so it does not discover this folder. Point Claude at the `SKILL.md`, or copy the skill into `.claude/skills/`.
+
+### Why `.agents/skills/` and not `.codex/skills/`
+
+What the docs say: Codex lists `.agents/skills` folders in the repository and `~/.agents/skills` for the user. It does not list `.codex/skills`. Codex skills "build on the open agent skills standard", and agentskills.io calls `.agents/skills/` a widely-adopted convention.
+
+Our reading, which the Codex docs do not state: skills follow an open standard instead of being Codex-only configuration, so Codex reads them from a tool-neutral folder that other agents share. Codex-only settings stay in `.codex/`.
+
+### Three folders, three jobs
+
+| Folder | Who reads it | Loaded automatically | Used for |
+| --- | --- | --- | --- |
+| `.codex/` | Codex only | yes; project hooks need trust first | Codex agents, hooks, and settings |
+| `.agents/skills/` | Codex and GitHub Copilot | yes, while working in this repo | maintainer skills shared across agents |
+| `skills/` | people and agents told to use it | no | distributing skills to other repositories |
+
+## What the description is for
+
+The `name` and `description` frontmatter fields are required, as for every skill. Codex can choose a skill when the task matches its description, or you can call it explicitly with `$skill-name` or `/skills`.
+
+An optional `agents/openai.yaml` file adds Codex-specific display metadata, and can turn off implicit invocation.
+
+## Best practice
+
+- Put a skill here only when more than one agent should discover it in this repository.
+- Describe the intent and steps, not one tool's syntax, so each agent can follow it with its own tools.
+
+## Template
+
+```md
+---
+name: <skill-name>
+description: <What the workflow does>. Use when <situation>.
+---
+
+# <skill-name>
+
+## Workflow
+1. step
+2. step
+
+## Output
+What the result should look like.
+```
+
+## Real example
+
+This repo's `.agents/skills/sync-agent-layers/SKILL.md` keeps the three tool layers aligned:
+
+```md
+---
+name: sync-agent-layers
+description: Carries a relevant change across the Claude Code, GitHub Copilot, and Codex layers of this repository without making them identical. Use when an agent, skill, rule, instruction, or hook changes in .claude/, .github/, .codex/, or .agents/.
+---
+
+# Sync agent layers
+
+This repo shows one maintainer setup in three tools. When one layer changes, decide which counterparts need the same change, and apply it in each tool's own format.
+
+## Workflow
+
+1. Read `references/counterparts.md` and find the counterparts of the changed file.
+2. For each counterpart, decide whether the change is relevant:
+   - shared intent, such as the role, focus areas, covered paths, or validation steps: sync it
+   - tool-specific behavior, such as frontmatter fields, tool lists, hook output format, or trust rules: leave it, or adapt it only if that tool supports it
+3. Apply relevant changes in each tool's own format. Never copy one tool's syntax into another.
+4. If a file was added, renamed, or removed, update `references/counterparts.md` and the README tree.
+5. Run `bash .claude/skills/validate-learning-repo/scripts/check-required-files.sh`.
+
+## Output
+
+- counterparts updated, with one line per file on what changed
+- counterparts intentionally left different, and why
 ```
 
 ---
@@ -1569,8 +1832,10 @@ If you are adding this to a real repo, use this order:
 8. one Claude skill
 9. one GitHub agent
 10. one GitHub skill
-11. one optional hook on each side
-12. one shared skill
+11. one Codex agent
+12. one optional hook per tool
+13. one cross-agent skill in `.agents/skills/`
+14. one shared skill
 
 This order works because it moves from:
 

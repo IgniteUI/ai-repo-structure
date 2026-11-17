@@ -3,7 +3,7 @@
 ## Structure
 - Do all paths mentioned in markdown files exist?
 - Do example repo trees match actual folders and files?
-- Are Claude files under `.claude/` and GitHub/Copilot files under `.github/`?
+- Are Claude files under `.claude/`, GitHub/Copilot files under `.github/`, Codex files under `.codex/`, and cross-agent skills under `.agents/skills/`?
 - Does `AGENTS.md` include the `## Commands` section this repo requires? (repo convention, not an `AGENTS.md` format requirement)
 
 ## Agent quality

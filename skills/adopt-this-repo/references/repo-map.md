@@ -35,10 +35,22 @@ This repository is split into a few layers that do different jobs.
 - `.github/hooks/`
   Optional Copilot hook configs.
 
+## Internal Codex layer
+
+- `.codex/agents/`
+  Codex specialist roles, as TOML files.
+- `.codex/hooks.json`
+  Optional Codex hook configs.
+
+## Cross-agent layer
+
+- `.agents/skills/`
+  Maintainer skills that Codex and Copilot discover automatically. Claude Code does not scan this folder.
+
 ## Shared external layer
 
 - `skills/`
-  Shared user-facing skills for repo users and outside agents.
+  Shared user-facing skills for repo users and outside agents. Agents do not load this folder automatically.
 
 ## Hooks and support scripts
 

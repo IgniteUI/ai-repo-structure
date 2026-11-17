@@ -7,6 +7,7 @@
 ## Layering
 - Is Claude-specific behavior in `.claude/`?
 - Is GitHub/Copilot-specific behavior in `.github/`?
+- Is Codex-specific behavior in `.codex/`, and are cross-agent skills in `.agents/skills/`?
 - Are shared external skills kept in `skills/`?
 
 ## Agent and skill quality

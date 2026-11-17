@@ -7,6 +7,8 @@ paths:
   - "CLAUDE.md"
   - ".claude/**/*.md"
   - ".github/**/*.md"
+  - ".codex/**"
+  - ".agents/**/*.md"
   - "skills/**/*.md"
   - "docs/**/*.md"
 ---

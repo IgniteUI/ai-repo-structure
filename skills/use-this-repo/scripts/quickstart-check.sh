@@ -7,6 +7,8 @@ required_paths=(
   "CLAUDE.md"
   ".claude"
   ".github"
+  ".codex"
+  ".agents/skills"
   "skills"
 )
 

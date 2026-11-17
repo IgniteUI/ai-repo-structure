@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Usage: quickstart-check.sh <target-path> [--codex-only]
 target="${1:-.}"
 
 if [ ! -d "$target" ]; then
@@ -19,6 +20,7 @@ good_to_have_paths=(
 )
 
 optional_paths=(
+  ".agents/skills"
   "skills"
 )
 
@@ -47,17 +49,26 @@ echo
 
 check_group "Must-have" "${must_have_paths[@]}"
 
-# Minimal level needs one always-on file for the tool in use.
+# Minimal level needs one always-on file for the tool in use. Codex reads AGENTS.md directly.
 echo "Must-have (one of)"
 if [ -e "$target/CLAUDE.md" ] || [ -e "$target/.github/copilot-instructions.md" ]; then
   echo "OK: CLAUDE.md or .github/copilot-instructions.md"
+elif [ "${2:-}" = "--codex-only" ]; then
+  echo "OK: Codex-only repo; AGENTS.md is the always-on file"
 else
-  echo "MISSING: CLAUDE.md or .github/copilot-instructions.md"
+  echo "MISSING: CLAUDE.md or .github/copilot-instructions.md (for a Codex-only repo, re-run with --codex-only)"
   missing_must_have=1
 fi
 echo
 
-check_group "Good-to-have" "${good_to_have_paths[@]}"
+if [ "${2:-}" = "--codex-only" ]; then
+  # Codex scopes guidance with nested AGENTS.md files, not these folders.
+  echo "Good-to-have"
+  echo "SKIP: .claude/rules and .github/instructions (Codex-only repo)"
+  echo
+else
+  check_group "Good-to-have" "${good_to_have_paths[@]}"
+fi
 check_group "Optional" "${optional_paths[@]}"
 
 if [ "$missing_must_have" -eq 0 ]; then

@@ -36,6 +36,15 @@ Use these for Copilot-specific instructions, scoped guidance, agents, skills, an
 
 The `.github/hooks/` folder is specifically for GitHub Copilot hook configs, which run in Copilot CLI and Copilot cloud agent. It is not a generic GitHub repository feature and it is separate from GitHub Actions.
 
+## OpenAI Codex side
+
+OpenAI Codex repo files usually include:
+
+- `.codex/agents/`
+- `.codex/hooks.json`
+
+Codex has no tool-specific instruction file: it reads `AGENTS.md` directly. It discovers skills in `.agents/skills/`, a cross-agent folder that GitHub Copilot also reads.
+
 ## Shared layer
 
 Some things should stay outside both vendor-specific layers:
@@ -52,8 +61,9 @@ Think of it like this:
 
 - `CLAUDE.md` ↔ `.github/copilot-instructions.md`
 - `.claude/rules/` ↔ `.github/instructions/`
-- `.claude/agents/` ↔ `.github/agents/`
-- `.claude/skills/` ↔ `.github/skills/`
+- `.claude/agents/` ↔ `.github/agents/` ↔ `.codex/agents/`
+- `.claude/skills/` ↔ `.github/skills/` ↔ `.agents/skills/` (Codex and Copilot)
+- `.claude/settings.json` hooks ↔ `.github/hooks/` ↔ `.codex/hooks.json`
 
 They are not always identical features, but they play similar structural roles.
 

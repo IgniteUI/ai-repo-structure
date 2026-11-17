@@ -39,10 +39,24 @@ Typical contents:
 - `skills/` for GitHub Copilot workflows
 - `hooks/` for optional Copilot hook configs
 
+## Internal Codex layer
+
+### `.codex/`
+This folder is for internal Codex setup used by maintainers.
+
+Typical contents:
+- `agents/` for Codex custom agents, as TOML files
+- `hooks.json` for optional Codex hooks
+
+## Cross-agent layer
+
+### `.agents/skills/`
+This folder holds maintainer skills that Codex and Copilot discover automatically while working in this repo. Claude Code does not scan it.
+
 ## External/shared layer
 
 ### `skills/`
-This folder contains external/shared skills for users and outside agents.
+This folder contains external/shared skills for users and outside agents. Agents do not load it automatically.
 
 Use this layer for:
 - onboarding to the repo

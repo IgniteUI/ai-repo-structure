@@ -5,7 +5,7 @@
   # AI Repo Structure - Build AI-Ready Repositories
 
   **A working reference for structuring AI-enabled repositories:**  
-  **`AGENTS.md`, `CLAUDE.md`, instructions, custom agents, skills, and hooks, each in the right place.**
+  **`AGENTS.md`, `CLAUDE.md`, instructions, custom agents, skills, and hooks for Claude Code, GitHub Copilot, and OpenAI Codex, each in the right place.**
 
   [![GitHub stars](https://img.shields.io/github/stars/IgniteUI/ai-repo-structure?style=for-the-badge&logo=github&label=Star%20the%20Repo)](https://github.com/IgniteUI/ai-repo-structure)
   [![MIT License](https://img.shields.io/badge/Open%20Source-MIT-22c55e?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](./LICENSE)
@@ -24,7 +24,7 @@ Adding AI coding tools to a repo usually starts with one instruction file and gr
 
 - one giant instruction file that tries to do every job
 - no clear answer to what belongs in `AGENTS.md`, `CLAUDE.md`, rules, agents, skills, or hooks
-- Claude Code and GitHub Copilot setups that drift apart or duplicate each other
+- Claude Code, GitHub Copilot, and Codex setups that drift apart or duplicate each other
 
 This repository shows a clean alternative. It is a **template**, a **reference implementation**, and a **learning repo** at the same time: its own AI setup is real, in use, and part of the lesson.
 
@@ -48,6 +48,21 @@ The full decision table, with when to use each one and what not to use it for, i
 
 ---
 
+## Claude Code vs GitHub Copilot vs OpenAI Codex
+
+| Job | Claude Code | GitHub Copilot | OpenAI Codex |
+| --- | --- | --- | --- |
+| Shared instructions | `AGENTS.md` via `@AGENTS.md` in `CLAUDE.md` | `AGENTS.md` | `AGENTS.md` |
+| Tool-specific instructions | `CLAUDE.md` | `.github/copilot-instructions.md` | none |
+| Path-scoped instructions | `.claude/rules/` | `.github/instructions/` | nested `AGENTS.md` |
+| Project skills | `.claude/skills/` | `.github/skills/`, `.claude/skills/`, `.agents/skills/` | `.agents/skills/` |
+| Custom agents | `.claude/agents/*.md` | `.github/agents/*.agent.md` | `.codex/agents/*.toml` |
+| Hooks | `.claude/settings.json` | `.github/hooks/*.json` | `.codex/hooks.json` |
+
+The detailed version, with how each tool loads these files, is in [LEARN.md](./LEARN.md#cross-agent-compatibility).
+
+---
+
 ## What's inside
 
 | Layer | Location | For | Contains |
@@ -55,13 +70,15 @@ The full decision table, with when to use each one and what not to use it for, i
 | Shared root | [`README.md`](./README.md), [`LEARN.md`](./LEARN.md), [`AGENTS.md`](./AGENTS.md), [`CLAUDE.md`](./CLAUDE.md), [`CONTRIBUTING.md`](./CONTRIBUTING.md) | Humans and all agents | Entry point, course, shared agent rules, Claude rules, contributor workflow |
 | Internal Claude | [`.claude/`](./.claude) | Maintainers using Claude Code | A scoped rule, the `learning-repo-maintainer` agent, the `validate-learning-repo` skill, a `SessionStart` hook in `settings.json` |
 | Internal GitHub/Copilot | [`.github/`](./.github) | Maintainers using GitHub Copilot | Repo-wide and path-specific instructions, the `learning-repo-maintainer` agent, the `review-learning-repo-pr` skill, an optional `sessionStart` hook for Copilot CLI and Copilot cloud agent |
+| Internal Codex | [`.codex/`](./.codex) | Maintainers using OpenAI Codex | The `learning_repo_maintainer` agent, a `SessionStart` hook in `hooks.json` |
+| Cross-agent skills | [`.agents/skills/`](./.agents/skills) | Codex and Copilot, discovered automatically | The [`sync-agent-layers`](./.agents/skills/sync-agent-layers/SKILL.md) skill that keeps the three tool layers aligned |
 | Shared skills | [`skills/`](./skills) | Users of the repo and outside agents | [`use-this-repo`](./skills/use-this-repo/SKILL.md) to understand the structure, [`adopt-this-repo`](./skills/adopt-this-repo/SKILL.md) to plan adoption in another project |
 | Hook support | [`scripts/hooks/`](./scripts/hooks) | Hook runtimes | Small scripts that give agents session-start context and checks |
 | Docs site | [`docs/`](./docs) | Search and browsing | The public [GitHub Pages site](https://igniteui.github.io/ai-repo-structure/) |
 
-The Claude and Copilot layers mirror each other on purpose, so you can compare the same idea in both tools.
+The Claude, Copilot, and Codex layers mirror each other on purpose, so you can compare the same idea across tools.
 
-`skills/` is a distribution layer: coding agents do not load it automatically. To use a skill, copy it into `.claude/skills/` or `.github/skills/`, or point an agent at its `SKILL.md`.
+`skills/` is a distribution layer: coding agents do not load it automatically. To use a skill, copy it into `.claude/skills/`, `.github/skills/`, or `.agents/skills/`, or point an agent at its `SKILL.md`. Skills already in `.agents/skills/` are different: Codex and Copilot discover them automatically while working in this repo.
 
 <details>
 <summary><strong>Show how the layers connect (diagram)</strong></summary>
@@ -92,11 +109,11 @@ Then pick a path.
 
 - `README.md`
 - `AGENTS.md`
-- one always-on file for the tool you use: `CLAUDE.md` or `.github/copilot-instructions.md`
+- one always-on file for the tool you use: `CLAUDE.md` or `.github/copilot-instructions.md` (Codex needs none; it reads `AGENTS.md` directly)
 
 Start from the templates in [Module 2](./LEARN.md#module-2--agentsmd), [Module 3](./LEARN.md#module-3--claudemd), and [Module 8](./LEARN.md#module-8--github-copilot-repo-wide-instructions). Add rules, agents, skills, and hooks only when a real need appears. The [adoption levels](./skills/adopt-this-repo/references/adoption-levels.md) describe when to move from `minimal` to `practical` or `full`.
 
-**3. Let your coding agent plan it.** Point Claude Code, GitHub Copilot, or another agent at the adoption skill:
+**3. Let your coding agent plan it.** Point Claude Code, GitHub Copilot, Codex, or another agent at the adoption skill:
 
 ```text
 Follow skills/adopt-this-repo/SKILL.md to create an adoption plan for my project at <path-to-your-repo>.
@@ -108,25 +125,26 @@ It returns a plan split into must-have, good-to-have, and optional, with what to
 
 ## The course
 
-[LEARN.md](./LEARN.md) is a practical course with 14 modules. Every module covers what the file is for, how to write its description, best practices, a **copyable template**, and a **real example** from this repository.
+[LEARN.md](./LEARN.md) is a practical course with 17 modules. Every module covers what the file is for, how to write its description, best practices, a **copyable template**, and a **real example** from this repository.
 
 | Area | Modules |
 | --- | --- |
 | Shared root | [1. README.md](./LEARN.md#module-1--readmemd) · [2. AGENTS.md](./LEARN.md#module-2--agentsmd) |
 | Claude | [3. CLAUDE.md](./LEARN.md#module-3--claudemd) · [4. Rules](./LEARN.md#module-4--claude-rules) · [5. Agents](./LEARN.md#module-5--claude-agents) · [6. Skills](./LEARN.md#module-6--claude-skills) · [7. Settings and hooks](./LEARN.md#module-7--claude-settings-and-hooks) |
 | GitHub Copilot | [8. Repo-wide instructions](./LEARN.md#module-8--github-copilot-repo-wide-instructions) · [9. Path-specific instructions](./LEARN.md#module-9--github-path-specific-instructions) · [10. Agents](./LEARN.md#module-10--github-agents) · [11. Skills](./LEARN.md#module-11--github-skills) · [12. Hooks](./LEARN.md#module-12--github-copilot-hooks) |
-| Shared | [13. Shared skills](./LEARN.md#module-13--shared-skills) · [14. Hook support scripts](./LEARN.md#module-14--hook-support-scripts) |
+| OpenAI Codex | [15. Custom agents](./LEARN.md#module-15--codex-custom-agents) · [16. Hooks](./LEARN.md#module-16--codex-hooks) |
+| Shared | [13. Shared skills](./LEARN.md#module-13--shared-skills) · [14. Hook support scripts](./LEARN.md#module-14--hook-support-scripts) · [17. Cross-agent skills](./LEARN.md#module-17--cross-agent-skills) |
 
-It ends with [a good rollout order](./LEARN.md#a-good-rollout-order) and [common mistakes](./LEARN.md#common-mistakes).
+It ends with [a good rollout order](./LEARN.md#a-good-rollout-order) and [common mistakes](./LEARN.md#common-mistakes), and includes a [cross-agent compatibility table](./LEARN.md#cross-agent-compatibility).
 
 ---
 
 ## Core ideas
 
 1. **AI files should have clear roles.** Not everything belongs in one giant instruction file.
-2. **Internal and external AI layers should be separate.** Maintainer AI (`.claude/`, `.github/`) is different from user-facing AI (`skills/`).
+2. **Internal and external AI layers should be separate.** Maintainer AI (`.claude/`, `.github/`, `.codex/`, `.agents/skills/`) is different from user-facing AI (`skills/`).
 3. **Each file type does a different job.** Rules and instructions are guidance, agents are specialized roles, skills are reusable workflows, and hooks are optional deterministic automation for supported runtimes.
-4. **Hooks stay small and low-risk.** Here they only run at session start: Claude receives a one-line repo check result, and Copilot CLI or cloud agent can run a quick check of core files.
+4. **Hooks stay small and low-risk.** Here they only run at session start: Claude and Codex receive a one-line repo check result, and Copilot CLI or cloud agent can run a quick check of core files.
 5. **A template repo should still feel real.** Meaningful files and realistic relationships teach more than an empty folder tree.
 
 ---
@@ -138,6 +156,13 @@ It ends with [a good rollout order](./LEARN.md#a-good-rollout-order) and [common
 
 ```text
 ai-repo-structure/
+├─ .agents/                                      # Cross-agent layer discovered automatically by Codex and Copilot
+│  └─ skills/
+│     └─ sync-agent-layers/                      # Skill that carries relevant changes across the Claude, Copilot, and Codex layers
+│        ├─ references/
+│        │  └─ counterparts.md                   # Which file in each tool layer does the same job
+│        └─ SKILL.md                             # Cross-agent skill definition and workflow
+│
 ├─ .claude/                                      # Internal Claude layer for repo maintainers
 │  ├─ agents/                                    # Claude subagents specialized for this repo
 │  │  └─ learning-repo-maintainer.md             # Claude agent that maintains repo structure and learning quality
@@ -153,6 +178,11 @@ ai-repo-structure/
 │  │     │  └─ check-required-files.sh           # Script that checks whether required repo files exist
 │  │     └─ SKILL.md                             # Main Claude skill definition and workflow instructions
 │  └─ settings.json                              # Claude project settings; needed here because Claude project hooks live here
+│
+├─ .codex/                                       # Internal Codex layer for repo maintainers
+│  ├─ agents/                                    # Codex custom agents for this repo
+│  │  └─ learning_repo_maintainer.toml           # Codex maintainer agent for repo structure and learning content
+│  └─ hooks.json                                 # Codex SessionStart hook that reports the repo check result
 │
 ├─ .github/                                      # Internal GitHub/Copilot layer for repo maintainers
 │  ├─ agents/                                    # Custom GitHub Copilot agents for this repo
@@ -210,9 +240,9 @@ ai-repo-structure/
 │     └─ mermaid-diagram.png                     # Diagram of how the AI layers connect
 │
 ├─ scripts/                                      # Shared repo utility scripts
-│  └─ hooks/                                     # Helper scripts used by Claude and GitHub/Copilot hooks
-│     ├─ claude-session-context.sh               # Reports the repo check result to Claude at SessionStart
-│     └─ github-session-start-check.sh           # Bash sessionStart check for GitHub Copilot hooks
+│  └─ hooks/                                     # Helper scripts used by Claude, GitHub/Copilot, and Codex hooks
+│     ├─ github-session-start-check.sh           # Bash sessionStart check for GitHub Copilot hooks
+│     └─ session-start-context.sh                # Reports the repo check result to Claude and Codex at SessionStart
 │
 ├─ src/                                          # Project source area; currently the AI Repo Map demo page
 │  ├─ index.html                                 # Small HTML shell for the demo page

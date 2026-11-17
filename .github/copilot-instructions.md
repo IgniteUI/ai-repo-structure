@@ -13,6 +13,8 @@ When working here:
   - shared agent instructions in `AGENTS.md`
   - Claude-specific setup in `.claude/`
   - GitHub/Copilot-specific setup in `.github/`
+  - Codex-specific setup in `.codex/`
+  - cross-agent skills in `.agents/skills/`, which Copilot also discovers
   - external/shared user-facing skills in `skills/`
 
 When editing agent or skill files:

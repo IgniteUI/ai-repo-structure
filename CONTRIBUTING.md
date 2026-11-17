@@ -15,6 +15,8 @@ It demonstrates:
 - `CLAUDE.md` for Claude-specific guidance
 - `.claude/` for internal Claude rules, agents, skills, and hooks
 - `.github/` for internal GitHub Copilot instructions, agents, skills, and hooks
+- `.codex/` for internal Codex agents and hooks
+- `.agents/skills/` for cross-agent skills that Codex and Copilot discover automatically
 - `skills/` for external/shared user-facing skills
 
 ## Start here
@@ -48,7 +50,7 @@ If your change touches AI-related files, make sure the examples and the real fil
 When adding, renaming, or removing files or folders:
 
 - update the matching docs and examples
-- keep `.claude/`, `.github/`, and `skills/` clearly separated
+- keep `.claude/`, `.github/`, `.codex/`, `.agents/skills/`, and `skills/` clearly separated
 - make sure the repo still teaches the same structure it actually contains
 
 ## If you add or update a skill
@@ -92,7 +94,7 @@ Before opening a pull request:
 
 If hook-related files changed, also check:
 
-- `bash scripts/hooks/claude-session-context.sh`
+- `bash scripts/hooks/session-start-context.sh`
 - `bash scripts/hooks/github-session-start-check.sh`
 
 ## Pull request checklist

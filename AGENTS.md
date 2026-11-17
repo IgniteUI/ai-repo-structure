@@ -8,6 +8,8 @@ It demonstrates how to organize:
 - Claude-specific instructions in `CLAUDE.md`
 - Claude internal agents and skills in `.claude/`
 - GitHub Copilot instructions, agents, and skills in `.github/`
+- Codex agents and hooks in `.codex/`
+- cross-agent skills that Codex and Copilot discover automatically in `.agents/skills/`
 - external/shared user-facing skills in `skills/`
 
 ## Working rules
@@ -15,8 +17,8 @@ It demonstrates how to organize:
 - Prefer small, focused changes.
 - Prefer editing existing files over inventing new patterns unless the change clearly improves the template.
 - Do not make unrelated refactors.
-- Keep internal (`.claude/`, `.github/`) and external (`skills/`) layers clearly separated.
-- When changing folder structure, keep naming consistent across Claude, GitHub, and shared skills.
+- Keep internal (`.claude/`, `.github/`, `.codex/`, `.agents/skills/`) and external (`skills/`) layers clearly separated.
+- When changing folder structure, keep naming consistent across Claude, GitHub, Codex, and shared skills.
 - Update docs when behavior or structure changes.
 
 ## Commands
@@ -30,7 +32,9 @@ This repo is currently a documentation-first template repo.
 ## Project structure
 - `.claude/` contains internal Claude configuration for maintainers.
 - `.github/` contains internal GitHub/Copilot configuration for maintainers.
-- `skills/` contains external/shared skills for users and outside agents.
+- `.codex/` contains internal Codex configuration for maintainers.
+- `.agents/skills/` contains cross-agent maintainer skills that Codex and Copilot discover automatically.
+- `skills/` contains external/shared skills for users and outside agents. Agents do not load it automatically.
 
 ## Code and docs conventions
 - Keep examples short and practical.
@@ -56,7 +60,7 @@ Before finishing work:
 - make sure any new folder follows the documented template structure
 - make sure examples and file references still match the real repo
 - if hook-related files changed, check:
-  - `bash scripts/hooks/claude-session-context.sh`
+  - `bash scripts/hooks/session-start-context.sh`
   - `bash scripts/hooks/github-session-start-check.sh`
 
 ## Pull request guidance

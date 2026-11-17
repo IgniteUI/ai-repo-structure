@@ -17,6 +17,8 @@ Use this skill when the task is to verify that the repository still teaches the 
    - `CLAUDE.md`
    - `.claude/`
    - `.github/`
+   - `.codex/`
+   - `.agents/`
    - `skills/`
 4. Look for:
    - missing referenced files

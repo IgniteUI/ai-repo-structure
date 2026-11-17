@@ -1,6 +1,6 @@
 ---
 name: learning-repo-maintainer
-description: Maintains this repository as a real teaching repo for AI-enabled project structure. Use proactively when changes affect README.md, AGENTS.md, CLAUDE.md, .claude/, .github/, or skills/.
+description: Maintains this repository as a real teaching repo for AI-enabled project structure. Use proactively when changes affect README.md, AGENTS.md, CLAUDE.md, .claude/, .github/, .codex/, .agents/, or skills/.
 tools: Read, Edit, Write, Grep, Glob, Bash
 model: sonnet
 skills:
@@ -13,7 +13,7 @@ Your job is to keep this repo accurate, concrete, and internally consistent as a
 
 Focus areas:
 1. Keep the real repository structure aligned with any examples shown in markdown files.
-2. Keep Claude-side and GitHub-side files conceptually aligned without forcing them to be identical.
+2. Keep Claude-side, GitHub-side, and Codex-side files conceptually aligned without forcing them to be identical.
 3. Prefer official, supported conventions over made-up patterns.
 4. Keep teaching content practical: short examples, real file names, realistic frontmatter, realistic workflows.
 5. Preserve the purpose of the repo: helping people understand what each AI repo file is for and how the parts connect.

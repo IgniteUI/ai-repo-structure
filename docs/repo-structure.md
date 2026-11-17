@@ -15,6 +15,8 @@ The repository is split into clear layers:
 - **Root files** for shared and high-level guidance
 - **`.claude/`** for internal Claude maintainer workflows
 - **`.github/`** for internal GitHub Copilot maintainer workflows
+- **`.codex/`** for internal OpenAI Codex maintainer workflows
+- **`.agents/skills/`** for cross-agent skills that Codex and Copilot discover automatically
 - **`skills/`** for external/shared user-facing skills
 
 ## Root files
@@ -62,10 +64,23 @@ Reusable Copilot workflows.
 ### `.github/hooks/`
 Optional GitHub Copilot hook.
 
+## Internal OpenAI Codex layer
+
+### `.codex/agents/`
+Codex custom agents, written as TOML files.
+
+### `.codex/hooks.json`
+Codex hooks, such as a session-start check.
+
+## Cross-agent layer
+
+### `.agents/skills/`
+Maintainer skills that Codex and GitHub Copilot discover automatically. Claude Code does not scan this folder.
+
 ## External/shared layer
 
 ### `skills/`
-External/shared skills for users of the repo and outside agents.
+External/shared skills for users of the repo and outside agents. Agents do not load this folder automatically; copy a skill or point an agent at its `SKILL.md`.
 
 ## Why this structure works
 

@@ -15,6 +15,8 @@ Use this file to decide what should move over directly and what should change fo
   - `CLAUDE.md`
   - `.github/copilot-instructions.md`
   - `.github/instructions/*.instructions.md`
+  - `.codex/agents/*.toml` and `.codex/hooks.json`
+  - `.agents/skills/` for skills that Codex and Copilot should discover automatically
 
 ## Usually adapt
 

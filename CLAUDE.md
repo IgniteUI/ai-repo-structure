@@ -9,7 +9,7 @@ Claude Code reads the import first, then the sections below. Without a `CLAUDE.m
 
 ## Working rules
 - Check the session-start result first. If it reports missing files, fix them before other work.
-- When you change a file in `.claude/`, check its counterpart in `.github/` (rules and instructions, agents, skills). Keep them aligned without forcing them to be identical.
+- When you change a file in `.claude/`, check its counterparts in `.github/` and `.codex/` with the `sync-agent-layers` skill. Keep them aligned without forcing them to be identical.
 - For changes that touch more than one layer, use plan mode to outline the change before editing.
 
 ## Rules (`.claude/rules/`)
@@ -25,10 +25,10 @@ Claude Code reads the import first, then the sections below. Without a `CLAUDE.m
 ## Skills (`.claude/skills/`)
 - `validate-learning-repo` audits whether the repo still matches what it teaches. Use it after structure or documentation changes.
 - Only a skill's `name` and `description` load at startup. The `SKILL.md` body loads when the skill is used, and files in `references/` load only when needed.
-- Claude Code does not load the shared skills in `skills/` automatically. When a user asks about them, read the relevant `SKILL.md` directly.
+- Claude Code does not load the shared skills in `skills/` or the cross-agent skills in `.agents/skills/` automatically. When you need one, read its `SKILL.md` directly, for example `.agents/skills/sync-agent-layers/SKILL.md`.
 
 ## Hooks and settings
-- `.claude/settings.json` is shared and committed. Its `SessionStart` hook runs `scripts/hooks/claude-session-context.sh`, which adds a one-line repo check result to the context.
+- `.claude/settings.json` is shared and committed. Its `SessionStart` hook runs `scripts/hooks/session-start-context.sh`, shared with the Codex hook, which adds a one-line repo check result to the context.
 - Hook commands start with `bash`, so they work even when a script is not executable.
 - Keep hooks deterministic and fast. Judgment calls belong in rules, subagents, or skills.
 - Personal settings go in `.claude/settings.local.json`, which is gitignored.

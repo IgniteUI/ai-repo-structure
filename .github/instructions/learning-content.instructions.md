@@ -1,5 +1,5 @@
 ---
-applyTo: "README.md,LEARN.md,CONTRIBUTING.md,AGENTS.md,CLAUDE.md,.claude/**/*.md,.github/**/*.md,skills/**/*.md,docs/**/*.md"
+applyTo: "README.md,LEARN.md,CONTRIBUTING.md,AGENTS.md,CLAUDE.md,.claude/**/*.md,.github/**/*.md,.codex/**,.agents/**/*.md,skills/**/*.md,docs/**/*.md"
 ---
 
 # Learning content instructions

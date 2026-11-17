@@ -12,7 +12,7 @@ Focus on:
 - README structure and teaching quality
 - consistency between examples and real files
 - correctness of `.github/` customization files
-- correctness of `.claude/` examples when they are described from the GitHub side
+- correctness of `.claude/` and `.codex/` examples when they are described from the GitHub side
 - clarity of agent and skill naming
 
 Always:

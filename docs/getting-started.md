@@ -31,6 +31,8 @@ A good minimal adoption path is:
 - `.claude/`
 - `.github/`
 
+For a Codex-only repo, `README.md` and `AGENTS.md` are enough to start; add `.codex/` when you need agents or hooks.
+
 Then add shared external `skills/` only when they are useful.
 
 ## 3. As a reference implementation

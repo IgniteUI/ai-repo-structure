@@ -9,6 +9,7 @@ required_files=(
   "CONTRIBUTING.md"
   ".github/copilot-instructions.md"
   ".claude/settings.json"
+  ".codex/hooks.json"
 )
 
 missing=0

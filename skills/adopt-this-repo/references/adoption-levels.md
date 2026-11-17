@@ -11,7 +11,8 @@ Use this for most repos first.
   - `AGENTS.md`
   - one tool-specific always-on file that matches the tool in use:
     - `CLAUDE.md`, or
-    - `.github/copilot-instructions.md`
+    - `.github/copilot-instructions.md`, or
+    - none for Codex, which reads `AGENTS.md` directly
 - Good-to-have:
   - one scoped instruction file if one part of the repo needs special guidance
 - Optional:
@@ -31,6 +32,7 @@ Use this when the team already relies on AI tooling and wants a reusable setup w
   - one shared skill in `skills/`
   - one internal skill for the tool the team actively uses
 - Optional:
+  - one cross-agent skill in `.agents/skills/` if both Codex and Copilot should discover it
   - one custom agent for a real repeated role such as review, docs, or maintenance
   - hook support scripts
   - optional hook configs
@@ -43,7 +45,7 @@ Use this only when the target repo is intentionally building a full internal AI 
 
 - Must-have:
   - the `practical` level
-  - `.claude/` and `.github/` internals that match active workflows
+  - `.claude/`, `.github/`, or `.codex/` internals for the tools the team uses, matching active workflows
 - Good-to-have:
   - dedicated agents for review, docs, maintenance, or handoffs
   - multiple internal skills with references and scripts

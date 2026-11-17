@@ -1,6 +1,6 @@
 ---
 name: review-learning-repo-pr
-description: Reviews pull requests that change the teaching structure of this repository. Use when PRs affect README.md, AGENTS.md, CLAUDE.md, .claude/, .github/, or skills/.
+description: Reviews pull requests that change the teaching structure of this repository. Use when PRs affect README.md, AGENTS.md, CLAUDE.md, .claude/, .github/, .codex/, .agents/, or skills/.
 ---
 
 # Review learning repo PR
@@ -17,6 +17,8 @@ Use this skill for pull requests that change the repository’s AI structure, in
    - `CLAUDE.md`
    - `.claude/`
    - `.github/`
+   - `.codex/`
+   - `.agents/`
    - `skills/`
 4. Check for:
    - incorrect or stale file paths

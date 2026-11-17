@@ -14,6 +14,8 @@ This project demonstrates how to combine:
 - `CLAUDE.md` for Claude-specific project guidance
 - `.claude/` for internal Claude rules, agents, skills, and hooks
 - `.github/` for internal GitHub Copilot instructions, agents, skills, and hooks
+- `.codex/` for internal OpenAI Codex agents and hooks
+- `.agents/skills/` for cross-agent skills that Codex and Copilot discover automatically
 - `skills/` for external/shared user-facing skills
 
 ## Why this repo exists
@@ -24,7 +26,7 @@ This repo exists to help people understand:
 
 - what each AI-related file is for
 - why the layers are separated
-- how Claude and GitHub Copilot fit into one repo
+- how Claude, GitHub Copilot, and OpenAI Codex fit into one repo
 - how to build a template repo that is both educational and practical
 
 ## What makes this repo useful
