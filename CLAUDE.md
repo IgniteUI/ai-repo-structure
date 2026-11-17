@@ -1,78 +1,44 @@
 # CLAUDE.md
 
-## Purpose
-This repository is a template for AI-enabled projects.
-
-It shows how to combine:
-- shared agent instructions in `AGENTS.md`
-- Claude-specific configuration in `.claude/`
-- external/shared user-facing skills in `skills/`
-
 @AGENTS.md
 
-## Repository map
-- `.claude/` = internal Claude setup for maintainers
-- `skills/` = external/shared skills for users and outside agents
+## Purpose
+`AGENTS.md`, imported above, holds the shared rules every coding agent follows. This file adds only what is specific to Claude Code: how to use the `.claude/` layer and how to manage Claude's context in this repo.
 
-## Core working rules
-- Prefer small, focused changes.
-- Do not make unrelated refactors.
-- Keep the template structure predictable and easy to scan.
-- When changing folder structure, keep naming consistent across Claude, GitHub, and shared skills.
-- Prefer editing existing files over inventing new patterns unless the change clearly improves the template.
+Claude Code reads the import first, then the sections below. Without a `CLAUDE.md`, Claude Code would read `AGENTS.md` directly. This file exists to add Claude-only guidance on top of it.
 
-## Structure conventions
-### Claude-side files
-- Put always-on Claude guidance in `CLAUDE.md`.
-- Put scoped Claude rules in `.claude/rules/`.
-- Put Claude subagents in `.claude/agents/`.
-- Put Claude skills in `.claude/skills/<skill-name>/`.
+## Working rules
+- Check the session-start result first. If it reports missing files, fix them before other work.
+- When you change a file in `.claude/`, check its counterpart in `.github/` (rules and instructions, agents, skills). Keep them aligned without forcing them to be identical.
+- For changes that touch more than one layer, use plan mode to outline the change before editing.
 
-### Shared external skills
-- Put user-facing or portable skills in `skills/<skill-name>/`.
+## Rules (`.claude/rules/`)
+- Use a rule for guidance that applies only to some files. Scope it with `paths` frontmatter.
+- A rule with `paths` loads when Claude reads or edits a matching file. A rule without `paths` loads in every session, like this file.
+- Example: `.claude/rules/repo-learning.md` applies only to teaching content such as `README.md`, `LEARN.md`, and `docs/**/*.md`.
 
-## Skill layout
-Every skill needs `SKILL.md`. Add `scripts/`, `references/`, and `assets/` only when the skill needs them:
+## Subagents (`.claude/agents/`)
+- `learning-repo-maintainer` keeps teaching content aligned with the real files. Delegate to it for changes to `README.md`, `AGENTS.md`, `CLAUDE.md`, `.claude/`, `.github/`, or `skills/`.
+- It runs in its own context with its own tool list, and preloads the `validate-learning-repo` skill through its `skills` field.
+- Add a new subagent only for a repeated role with a clearly different focus or tool set.
 
-```
-<skill-name>/
-├── SKILL.md
-├── scripts/
-├── references/
-└── assets/
-```
+## Skills (`.claude/skills/`)
+- `validate-learning-repo` audits whether the repo still matches what it teaches. Use it after structure or documentation changes.
+- Only a skill's `name` and `description` load at startup. The `SKILL.md` body loads when the skill is used, and files in `references/` load only when needed.
+- Claude Code does not load the shared skills in `skills/` automatically. When a user asks about them, read the relevant `SKILL.md` directly.
 
-## Skill naming guidance
-- Internal maintainer skills should use workflow-oriented names:
-  - `pr-review`
-  - `release-checklist`
-  - `repo-reviewer`
-- External/shared skills should use user-oriented names:
-  - `use-product`
-  - `install-product`
-  - `configure-project`
+## Hooks and settings
+- `.claude/settings.json` is shared and committed. Its `SessionStart` hook runs `scripts/hooks/claude-session-context.sh`, which adds a one-line repo check result to the context.
+- Hook commands start with `bash`, so they work even when a script is not executable.
+- Keep hooks deterministic and fast. Judgment calls belong in rules, subagents, or skills.
+- Personal settings go in `.claude/settings.local.json`, which is gitignored.
 
-## Change expectations
-When adding or updating AI-related files:
-- keep examples short and realistic
-- keep file names predictable
-- keep internal and external layers clearly separated
-- update related instructions when behavior changes
-
-## Validation
-Before finishing meaningful changes:
-- verify that referenced files and folders exist
-- verify that new skills follow the standard structure
+## Context management
+- This file and `AGENTS.md` load in every session, so keep both short. Imports do not reduce context cost.
+- `LEARN.md` is long. Search for the module heading you need instead of reading the whole file.
+- Delegate broad audits to `learning-repo-maintainer` so the main conversation keeps only its summary.
 
 ## Boundaries
-- Do not edit secrets, tokens, or environment files.
-- Do not invent folders or tools that are not part of the repository structure.
-- Do not remove AI-related conventions without replacing them with a clear alternative.
+- Do not copy shared rules from `AGENTS.md` into this file; change `AGENTS.md` instead.
 - Do not turn `CLAUDE.md` into a long reference manual; keep detailed task content in rules or skills.
-
-## Decision rule
-Use:
-- `CLAUDE.md` for always-on project guidance
-- `.claude/rules/` for scoped Claude guidance
-- `.claude/skills/` for Claude workflows
-- `skills/` for external/shared user-facing skills
+- Do not add hooks for subjective or long-running work.

@@ -126,7 +126,7 @@ It ends with [a good rollout order](./LEARN.md#a-good-rollout-order) and [common
 1. **AI files should have clear roles.** Not everything belongs in one giant instruction file.
 2. **Internal and external AI layers should be separate.** Maintainer AI (`.claude/`, `.github/`) is different from user-facing AI (`skills/`).
 3. **Each file type does a different job.** Rules and instructions are guidance, agents are specialized roles, skills are reusable workflows, and hooks are optional deterministic automation for supported runtimes.
-4. **Hooks stay small and low-risk.** Here they only orient an agent at session start: Claude receives repo context, and Copilot CLI or cloud agent can run a quick check of core files.
+4. **Hooks stay small and low-risk.** Here they only run at session start: Claude receives a one-line repo check result, and Copilot CLI or cloud agent can run a quick check of core files.
 5. **A template repo should still feel real.** Meaningful files and realistic relationships teach more than an empty folder tree.
 
 ---
@@ -175,8 +175,6 @@ ai-repo-structure/
 ├─ skills/                                       # External/shared skills for users of the repo and outside agents
 │  ├─ README.md                                  # Overview of the available shared skills
 │  ├─ use-this-repo/                             # Shared skill for understanding the repo structure and layers
-│  │  ├─ assets/                                 # Reusable templates for user-facing outputs
-│  │  │  └─ adoption-plan-template.md            # Template for suggesting how someone should adopt this repo
 │  │  ├─ references/                             # Supporting docs for understanding the repo
 │  │  │  └─ repo-map.md                          # Explanation of the repo layers and what each one is for
 │  │  ├─ scripts/                                # Helper scripts for external/shared usage
@@ -213,7 +211,7 @@ ai-repo-structure/
 │
 ├─ scripts/                                      # Shared repo utility scripts
 │  └─ hooks/                                     # Helper scripts used by Claude and GitHub/Copilot hooks
-│     ├─ claude-session-context.sh               # Emits repo context for Claude SessionStart
+│     ├─ claude-session-context.sh               # Reports the repo check result to Claude at SessionStart
 │     └─ github-session-start-check.sh           # Bash sessionStart check for GitHub Copilot hooks
 │
 ├─ src/                                          # Project source area; currently the AI Repo Map demo page

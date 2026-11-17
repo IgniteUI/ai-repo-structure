@@ -22,6 +22,7 @@ for file in "${required_files[@]}"; do
   fi
 done
 
+# Repo convention: the AGENTS.md format has no required sections, but this repo requires these.
 agents_file="AGENTS.md"
 required_agents_patterns=(
   '^## Commands$'

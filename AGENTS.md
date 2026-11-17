@@ -11,13 +11,12 @@ It demonstrates how to organize:
 - external/shared user-facing skills in `skills/`
 
 ## Working rules
-- Read `README.md` first for the repository purpose.
-- Read `LEARN.md` for the guided explanation of the repository structure and how the layers fit together.
-- Read `CLAUDE.md` for Claude-specific project rules.
-- Read `AGENTS.md` for agents project rules.
-- Check `.github/copilot-instructions.md` for Copilot-specific guidance.
+- `README.md` explains the repository purpose. `LEARN.md` is the course; read the relevant module when editing teaching content.
 - Prefer small, focused changes.
+- Prefer editing existing files over inventing new patterns unless the change clearly improves the template.
 - Do not make unrelated refactors.
+- Keep internal (`.claude/`, `.github/`) and external (`skills/`) layers clearly separated.
+- When changing folder structure, keep naming consistent across Claude, GitHub, and shared skills.
 - Update docs when behavior or structure changes.
 
 ## Commands
@@ -46,6 +45,7 @@ This repo is currently a documentation-first template repo.
 └── assets/
 ```
 
+- Name internal maintainer skills after the workflow (`pr-review`, `release-checklist`) and external/shared skills after the user goal (`use-product`, `configure-project`).
 - Keep instructions easy to scan.
 - Use Markdown for guidance files.
 

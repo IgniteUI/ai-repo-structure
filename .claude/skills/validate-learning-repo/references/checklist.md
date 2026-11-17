@@ -4,7 +4,7 @@
 - Do all paths mentioned in markdown files exist?
 - Do example repo trees match actual folders and files?
 - Are Claude files under `.claude/` and GitHub/Copilot files under `.github/`?
-- Does `AGENTS.md` include the required `## Commands` section?
+- Does `AGENTS.md` include the `## Commands` section this repo requires? (repo convention, not an `AGENTS.md` format requirement)
 
 ## Agent quality
 - Does each agent have a clear purpose?
