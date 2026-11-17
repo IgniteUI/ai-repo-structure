@@ -116,6 +116,7 @@ If you only remember one thing from this repo, remember this split:
 | custom agents | When you want a persistent specialist role with a clear job, voice, tool set, or handoff target | review agents, maintainer agents, docs agents, constrained tool access, repeatable delegation | broad always-on repo rules, small one-file instructions, generic workflows that do not need a persona |
 | skills | When a task is reusable, multi-step, and benefits from `SKILL.md`, scripts, references, or assets | onboarding flows, repo validation, PR review workflows, adoption guides | tiny universal rules, always-on behavior, pure persona definition |
 | hooks | When a supported runtime should run a small deterministic action automatically at a known event | session-start checks, safe context injection, lightweight validation, formatting | subjective review, long reasoning, hidden non-deterministic behavior |
+| MCP servers | When an agent needs tools or data from outside the repository | issue trackers, databases, browsers, internal APIs | repo instructions or workflows, secrets written into committed config |
 
 Short version:
 
@@ -126,6 +127,12 @@ Short version:
 - custom agents = specialist roles
 - skills = reusable workflows
 - hooks = automatic deterministic actions
+- MCP servers = external tools and data
+
+This repo does not configure MCP (Model Context Protocol) servers, but this is where their config lives:
+
+- Claude Code: `.mcp.json` at the repo root, committed and shared. Claude asks for approval before using project servers, and `${VAR}` expansion keeps secrets out of the file.
+- GitHub Copilot: `.vscode/mcp.json` in VS Code, `.mcp.json` or `.github/mcp.json` in Copilot CLI, repository settings on GitHub.com for cloud agent and code review, or `mcp-servers` in a custom agent profile.
 
 ---
 
@@ -279,6 +286,12 @@ Avoid:
 - long architecture essays
 - tool-specific private details
 - workflows that belong in skills
+
+### Nested AGENTS.md files
+
+In a monorepo, add an `AGENTS.md` inside a package or folder that needs different rules. Agents read the nearest file in the directory tree, so the closest one takes precedence, and an explicit instruction in the chat overrides them all.
+
+Claude Code supports nested `CLAUDE.md` files too. It loads one when it reads or edits files in that folder, and adds it to the context instead of replacing the root file.
 
 ## Template
 
@@ -678,6 +691,16 @@ A good skill folder often contains:
 
 Only `SKILL.md` is required. The other folders are optional.
 
+### How skills load
+
+Skills use progressive disclosure, so many skills can be installed without filling the context:
+
+1. At startup, the agent loads only each skill's `name` and `description`.
+2. When a task matches the description, it loads the full `SKILL.md`.
+3. Files in `scripts/`, `references/`, and `assets/` are read or run only when the steps need them.
+
+Keep `SKILL.md` under 500 lines. Move details into `references/` and link them directly from `SKILL.md`, one level deep.
+
 ## Template
 
 ```md
@@ -830,6 +853,23 @@ Bad uses:
 - fuzzy architecture review
 - subjective writing decisions
 - long reasoning tasks
+
+### Guidance versus enforcement
+
+`CLAUDE.md`, rules, and skills are guidance: Claude may decide a guideline does not apply. A rule with zero exceptions needs enforcement instead:
+
+- a `permissions.deny` rule in `.claude/settings.json`, which Claude Code enforces in every permission mode
+- a `PreToolUse` hook, which can block a tool call
+
+```json
+{
+  "permissions": {
+    "deny": ["Read(./.env)"]
+  }
+}
+```
+
+This repo keeps its secrets boundary as guidance in `AGENTS.md`. The snippet shows how to enforce it. On the GitHub side, a custom agent's `tools` list limits what it can use, and a `preToolUse` hook can deny a tool call.
 
 ## Template
 
