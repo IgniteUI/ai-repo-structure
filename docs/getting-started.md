@@ -4,8 +4,6 @@ description: Learn how to use ai-repo-structure as a starter, reference, and lea
 permalink: /getting-started/
 ---
 
-# Getting started with ai-repo-structure
-
 This repo can be used in three ways:
 
 ## 1. As a learning repo
@@ -14,11 +12,12 @@ Read the structure and understand what each layer is for.
 Recommended reading order:
 
 1. `README.md`
-2. `AGENTS.md`
-3. `CLAUDE.md`
-4. `.claude/`
-5. `.github/`
-6. `skills/`
+2. `LEARN.md`
+3. `AGENTS.md`
+4. `CLAUDE.md`
+5. `.claude/`, `.github/`, and `.codex/`
+6. `.agents/skills/`
+7. `skills/`
 
 ## 2. As a starter template
 Copy the smallest useful structure into your own repo first.
@@ -52,6 +51,7 @@ Instead:
 
 ## Useful pages
 
-- [Home](./index.html)
-- [Repo structure](./repo-structure.html)
-- [Claude vs GitHub Copilot](./claude-vs-copilot.html)
+- [Home]({{ '/' | relative_url }})
+- [Overview]({{ '/overview/' | relative_url }})
+- [Repo structure]({{ '/repo-structure/' | relative_url }})
+- [Claude vs GitHub Copilot vs OpenAI Codex]({{ '/claude-vs-copilot/' | relative_url }})

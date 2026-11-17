@@ -35,6 +35,8 @@ This repo is currently a documentation-first template repo.
 - `.codex/` contains internal Codex configuration for maintainers.
 - `.agents/skills/` contains cross-agent maintainer skills that Codex and Copilot discover automatically.
 - `skills/` contains external/shared skills for users and outside agents. Agents do not load it automatically.
+- `src/` is the application source: the landing page. Edit it there.
+- `docs/` is the published GitHub Pages site. After changing `src/`, copy `index.html`, `styles.css`, and `app.js` into `docs/` unchanged.
 
 ## Code and docs conventions
 - Keep examples short and practical.

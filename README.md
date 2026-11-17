@@ -74,7 +74,8 @@ The detailed version, with how each tool loads these files, is in [LEARN.md](./L
 | Cross-agent skills | [`.agents/skills/`](./.agents/skills) | Codex and Copilot, discovered automatically | The [`sync-agent-layers`](./.agents/skills/sync-agent-layers/SKILL.md) skill that keeps the three tool layers aligned |
 | Shared skills | [`skills/`](./skills) | Users of the repo and outside agents | [`use-this-repo`](./skills/use-this-repo/SKILL.md) to understand the structure, [`adopt-this-repo`](./skills/adopt-this-repo/SKILL.md) to plan adoption in another project |
 | Hook support | [`scripts/hooks/`](./scripts/hooks) | Hook runtimes | Small scripts that give agents session-start context and checks |
-| Docs site | [`docs/`](./docs) | Search and browsing | The public [GitHub Pages site](https://igniteui.github.io/ai-repo-structure/) |
+| Application source | [`src/`](./src) | Developers | The landing page source, standing in for a real project's application code |
+| Docs site | [`docs/`](./docs) | Search and browsing | The public [GitHub Pages site](https://igniteui.github.io/ai-repo-structure/), with published copies of the `src/` files |
 
 The Claude, Copilot, and Codex layers mirror each other on purpose, so you can compare the same idea across tools.
 
@@ -85,7 +86,50 @@ The Claude, Copilot, and Codex layers mirror each other on purpose, so you can c
 
 <br/>
 
-![How the AI layers connect](./public/assets/mermaid-diagram.png)
+```mermaid
+flowchart TB
+  subgraph root["Shared root"]
+    README["README.md<br/>Human entry point"]
+    LEARN["LEARN.md<br/>Guided course"]
+    AGENTS["AGENTS.md<br/>Shared agent rules"]
+    CLAUDE["CLAUDE.md<br/>Claude context"]
+  end
+
+  subgraph claude["Internal Claude"]
+    CR[".claude/rules/"]
+    CA[".claude/agents/"]
+    CS[".claude/skills/"]
+    CH[".claude/settings.json<br/>hooks"]
+  end
+
+  subgraph copilot["Internal GitHub Copilot"]
+    GCI[".github/copilot-instructions.md"]
+    GI[".github/instructions/"]
+    GA[".github/agents/"]
+    GS[".github/skills/"]
+    GH[".github/hooks/"]
+  end
+
+  subgraph codex["Internal Codex"]
+    XA[".codex/agents/"]
+    XH[".codex/hooks.json"]
+  end
+
+  XS[".agents/skills/<br/>Cross-agent skills"]
+  SK["skills/<br/>Shared skills, not auto-loaded"]
+  HS["scripts/hooks/<br/>Hook scripts"]
+
+  README --> LEARN
+  CLAUDE -- "imports" --> AGENTS
+  CLAUDE --> claude
+  AGENTS -. "read by" .-> copilot
+  AGENTS -. "read directly by" .-> codex
+  XS -. "discovered by" .-> copilot
+  XS -. "discovered by" .-> codex
+  CH --> HS
+  GH --> HS
+  XH --> HS
+```
 
 The diagram shows which files explain the repo, which files guide tools, and which folders contain reusable workflows or automation.
 
@@ -175,7 +219,7 @@ ai-repo-structure/
 │  │     ├─ references/                          # Supporting docs the skill reads while working
 │  │     │  └─ checklist.md                      # Checklist for validating structure, naming, and teaching quality
 │  │     ├─ scripts/                             # Helper scripts used by the skill
-│  │     │  └─ check-required-files.sh           # Script that checks whether required repo files exist
+│  │     │  └─ check-required-files.sh           # Script that checks required repo files and that docs/ matches src/
 │  │     └─ SKILL.md                             # Main Claude skill definition and workflow instructions
 │  └─ settings.json                              # Claude project settings; needed here because Claude project hooks live here
 │
@@ -223,31 +267,30 @@ ai-repo-structure/
 │
 ├─ docs/                                         # Public documentation site for GitHub Pages and search indexing
 │  ├─ _config.yml                                # GitHub Pages / Jekyll site configuration
-│  ├─ index.html                                 # Interactive landing page (AI Repo Map)
-│  ├─ styles.css                                 # Styles for the landing page
-│  ├─ app.js                                     # Script that renders the landing page content
-│  ├─ read.md                                    # Markdown overview page of the repository
+│  ├─ index.html                                 # Published copy of src/index.html for GitHub Pages
+│  ├─ styles.css                                 # Published copy of src/styles.css
+│  ├─ app.js                                     # Published copy of src/app.js
+│  ├─ read.md                                    # Markdown overview page, published at /overview/
 │  ├─ repo-structure.md                          # Page explaining the repository structure and each main layer
-│  ├─ claude-vs-copilot.md                       # Page comparing the Claude-specific and GitHub Copilot-specific parts
+│  ├─ claude-vs-copilot.md                       # Page comparing the Claude, GitHub Copilot, and Codex parts
 │  ├─ getting-started.md                         # Page showing how to use this repo as a starter, reference, or learning repo
 │  ├─ googlecad1e2aef0d47fd8.html                # Google Search Console verification file
 │  ├─ robots.txt                                 # Search engine crawler instructions for the public docs site
 │  └─ sitemap.xml                                # List of site pages to help search engines discover them
 │
-├─ public/                                       # Static assets used by the docs
+├─ public/                                       # Static assets used by the README
 │  └─ assets/
-│     ├─ igniteui.svg                            # Repository svg
-│     └─ mermaid-diagram.png                     # Diagram of how the AI layers connect
+│     └─ igniteui.svg                            # Repository svg
 │
 ├─ scripts/                                      # Shared repo utility scripts
 │  └─ hooks/                                     # Helper scripts used by Claude, GitHub/Copilot, and Codex hooks
 │     ├─ github-session-start-check.sh           # Bash sessionStart check for GitHub Copilot hooks
 │     └─ session-start-context.sh                # Reports the repo check result to Claude and Codex at SessionStart
 │
-├─ src/                                          # Project source area; currently the AI Repo Map demo page
-│  ├─ index.html                                 # Small HTML shell for the demo page
-│  ├─ styles.css                                 # Styles for the AI Repo Map layout
-│  └─ app.js                                     # Small script that renders the repo map content
+├─ src/                                          # Application source: the AI Repo Map landing page; edit here
+│  ├─ index.html                                 # Landing page markup, metadata, and static content
+│  ├─ styles.css                                 # Landing page styles
+│  └─ app.js                                     # Script that renders the directory tree and page effects
 │
 ├─ AGENTS.md                                     # Shared agent-facing instructions for coding agents working in the repo
 ├─ CLAUDE.md                                     # Main Claude-specific project guidance

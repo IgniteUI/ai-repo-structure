@@ -1,10 +1,8 @@
 ---
 title: AI repo structure
-description: A practical explanation of how to structure an AI-enabled repository using AGENTS.md, CLAUDE.md, internal Claude and GitHub Copilot layers, and shared external skills.
+description: A practical explanation of how to structure an AI-enabled repository using AGENTS.md, CLAUDE.md, internal Claude Code, GitHub Copilot, and OpenAI Codex layers, cross-agent skills, and shared external skills.
 permalink: /repo-structure/
 ---
-
-# AI repo structure
 
 This page explains the structure used by `ai-repo-structure`.
 
@@ -82,6 +80,14 @@ Maintainer skills that Codex and GitHub Copilot discover automatically. Claude C
 ### `skills/`
 External/shared skills for users of the repo and outside agents. Agents do not load this folder automatically; copy a skill or point an agent at its `SKILL.md`.
 
+## Application source and published site
+
+### `src/`
+The application source: the landing page, standing in for a real project's code. Changes start here.
+
+### `docs/`
+The published GitHub Pages site. It holds identical copies of `src/index.html`, `src/styles.css`, and `src/app.js`, plus the Markdown pages and search files.
+
 ## Why this structure works
 
 This structure keeps responsibilities separate:
@@ -89,6 +95,7 @@ This structure keeps responsibilities separate:
 - shared guidance stays shared
 - Claude-specific logic stays in Claude files
 - GitHub/Copilot-specific logic stays in GitHub files
+- Codex-specific logic stays in `.codex/`
 - user-facing shared workflows stay separate from maintainer workflows
 
 ## Who this structure is for
@@ -102,4 +109,4 @@ This repo structure is useful for:
 
 ## Next page
 
-Read [Claude vs GitHub Copilot structure](./claude-vs-copilot.html).
+Read [Claude vs GitHub Copilot vs OpenAI Codex structure]({{ '/claude-vs-copilot/' | relative_url }}).

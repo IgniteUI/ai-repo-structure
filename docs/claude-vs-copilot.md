@@ -1,14 +1,12 @@
 ---
-title: Claude vs GitHub Copilot repo structure
-description: Understand the difference between Claude-specific repo files and GitHub Copilot-specific repo files, and how to combine them in one clean project structure.
+title: Claude Code vs Copilot vs Codex repo structure
+description: Understand which repo files belong to Claude Code, GitHub Copilot, and OpenAI Codex, and how to combine them in one clean project structure.
 permalink: /claude-vs-copilot/
 ---
 
-# Claude vs GitHub Copilot repo structure
-
 A common question is:
 
-**What belongs in Claude files, and what belongs in GitHub Copilot files?**
+**What belongs in Claude files, what belongs in GitHub Copilot files, and what belongs in Codex files?**
 
 ## Claude side
 
@@ -47,7 +45,7 @@ Codex has no tool-specific instruction file: it reads `AGENTS.md` directly. It d
 
 ## Shared layer
 
-Some things should stay outside both vendor-specific layers:
+Some things should stay outside the vendor-specific layers:
 
 - `README.md`
 - `AGENTS.md`
@@ -67,9 +65,9 @@ Think of it like this:
 
 They are not always identical features, but they play similar structural roles.
 
-## Why combining both is useful
+## Why combining them is useful
 
-Using both sides in one repo helps teams:
+Keeping each tool's files on its own side in one repo helps teams:
 
 - keep tool-specific behavior organized
 - avoid mixing unrelated instructions together
@@ -78,4 +76,4 @@ Using both sides in one repo helps teams:
 
 ## Next page
 
-Read [Getting started](./getting-started.html).
+Read [Getting started]({{ '/getting-started/' | relative_url }}).

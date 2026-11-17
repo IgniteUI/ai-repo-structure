@@ -1,10 +1,8 @@
 ---
-title: ai-repo-structure
-description: Learn how to structure a real AI-enabled repository using AGENTS.md, CLAUDE.md, Claude rules, GitHub Copilot instructions, agents, skills, and shared external skills.
-permalink: /
+title: Overview
+description: Learn how to structure a real AI-enabled repository using AGENTS.md, CLAUDE.md, and Claude Code, GitHub Copilot, and OpenAI Codex agents, skills, and hooks.
+permalink: /overview/
 ---
-
-# ai-repo-structure
 
 `ai-repo-structure` is a practical learning repository that shows how to structure a modern AI-enabled repo in a clean, understandable, and reusable way.
 
@@ -45,12 +43,12 @@ It is a structured demonstration repo that tries to stay:
 
 If you are new to the repo, read these pages:
 
-- [Repo structure](./repo-structure.html)
-- [Claude vs GitHub Copilot structure](./claude-vs-copilot.html)
-- [Getting started](./getting-started.html)
+- [Repo structure]({{ '/repo-structure/' | relative_url }})
+- [Claude vs GitHub Copilot vs OpenAI Codex structure]({{ '/claude-vs-copilot/' | relative_url }})
+- [Getting started]({{ '/getting-started/' | relative_url }})
 
 ## Repository
 
-View the GitHub repository and copy the structure into your own project.
+View the [GitHub repository](https://github.com/IgniteUI/ai-repo-structure) and copy the structure into your own project.
 
 If you use this repo and find it useful, consider starring it so more people can discover it.

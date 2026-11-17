@@ -52,4 +52,14 @@ for i in "${!required_agents_patterns[@]}"; do
   fi
 done
 
+# docs/ publishes the landing page from src/, so the copies must stay identical.
+for file in index.html styles.css app.js; do
+  if cmp -s "src/$file" "docs/$file"; then
+    echo "OK: docs/$file matches src/$file"
+  else
+    echo "MISSING: docs/$file matches src/$file"
+    missing=1
+  fi
+done
+
 exit "$missing"

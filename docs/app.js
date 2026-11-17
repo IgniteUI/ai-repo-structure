@@ -1,37 +1,6 @@
-const layers = [
-  {
-    className: 'root',
-    label: 'Shared Root',
-    title: 'THE CORE DIRECTORY',
-    copy: 'These files explain the repo, guide contributors, and give the main shared context before tool-specific behavior begins.',
-    files: ['README.md — Main entry point', 'LEARN.md — Guided course', 'AGENTS.md — Shared agent rules', 'CLAUDE.md — Claude context']
-  },
-  {
-    className: 'claude',
-    label: 'Internal / Claude',
-    title: '.claude/',
-    copy: 'Claude-specific rules, agents, skills, and settings live here. This layer supports structured Claude maintainer workflows.',
-    files: ['rules/ — Scoped guidance', 'agents/ — Specialist roles', 'skills/ — Repeatable workflows', 'settings.json — Hooks config']
-  },
-  {
-    className: 'github',
-    label: 'Internal / Copilot',
-    title: '.github/',
-    copy: 'GitHub/Copilot instructions, agents, skills, and hook configs live here. Hand-crafted for GitHub-side behavior.',
-    files: ['copilot-instructions.md — Repo guidance', 'instructions/ — Path-specific context', 'agents/ — Copilot roles', 'hooks/ — Automation']
-  },
-  {
-    className: 'shared',
-    label: 'External / Public',
-    title: 'skills/',
-    copy: 'This is the reusable public-facing workflow layer. It is meant for users of the repo and outside agents, not only maintainers.',
-    files: ['SKILL.md — Workflow definition', 'assets/ — Templates', 'references/ — Supporting docs', 'scripts/ — Executables']
-  }
-];
-
 const treeData = [
   { path: "ai-repo-structure/", desc: "# A practical learning repository for AI-enabled projects", accent: "accent-blue" },
-  { path: "├─ .agents/", desc: "# Cross-agent layer discovered automatically by Codex and Copilot" },
+  { path: "├─ .agents/", desc: "# Cross-agent layer discovered automatically by Codex and Copilot", accent: "accent-agents" },
   { path: "│  └─ skills/", desc: "" },
   { path: "│     └─ sync-agent-layers/", desc: "# Skill that carries relevant changes across the Claude, Copilot, and Codex layers" },
   { path: "│        ├─ references/", desc: "" },
@@ -50,24 +19,24 @@ const treeData = [
   { path: "│  │     ├─ references/", desc: "# Supporting docs the skill reads while working" },
   { path: "│  │     │  └─ checklist.md", desc: "# Checklist for validating structure, naming, and teaching quality" },
   { path: "│  │     ├─ scripts/", desc: "# Helper scripts used by the skill" },
-  { path: "│  │     │  └─ check-required-files.sh", desc: "# Script that checks whether required repo files exist" },
+  { path: "│  │     │  └─ check-required-files.sh", desc: "# Script that checks required repo files and that docs/ matches src/" },
   { path: "│  │     └─ SKILL.md", desc: "# Main Claude skill definition and workflow instructions" },
-  { path: "│  └─ settings.json", desc: "# Claude project settings; needed here because hooks live here" },
+  { path: "│  └─ settings.json", desc: "# Claude project settings; needed here because Claude project hooks live here" },
   { path: "│", desc: "" },
-  { path: "├─ .codex/", desc: "# Internal Codex layer for repo maintainers" },
+  { path: "├─ .codex/", desc: "# Internal Codex layer for repo maintainers", accent: "accent-codex" },
   { path: "│  ├─ agents/", desc: "# Codex custom agents for this repo" },
   { path: "│  │  └─ learning_repo_maintainer.toml", desc: "# Codex maintainer agent for repo structure and learning content" },
   { path: "│  └─ hooks.json", desc: "# Codex SessionStart hook that reports the repo check result" },
   { path: "│", desc: "" },
   { path: "├─ .github/", desc: "# Internal GitHub/Copilot layer for repo maintainers", accent: "accent-github" },
   { path: "│  ├─ agents/", desc: "# Custom GitHub Copilot agents for this repo" },
-  { path: "│  │  └─ learning-repo-maintainer.agent.md", desc: "# GitHub-side maintainer agent for repo structure" },
+  { path: "│  │  └─ learning-repo-maintainer.agent.md", desc: "# GitHub-side maintainer agent for repo structure and learning content" },
   { path: "│  ├─ instructions/", desc: "# Path-specific Copilot instructions" },
-  { path: "│  │  └─ learning-content.instructions.md", desc: "# Copilot guidance for teaching content" },
+  { path: "│  │  └─ learning-content.instructions.md", desc: "# Copilot guidance for README, AGENTS, CLAUDE, and other teaching content" },
   { path: "│  ├─ hooks/", desc: "# GitHub/Copilot workspace hook configs" },
-  { path: "│  │  └─ session-start-check.json", desc: "# Official sessionStart hook config for core guidance" },
+  { path: "│  │  └─ session-start-check.json", desc: "# Official sessionStart hook config for validating core repo guidance" },
   { path: "│  ├─ skills/", desc: "# GitHub Copilot skills for repeatable maintainer workflows" },
-  { path: "│  │  └─ review-learning-repo-pr/", desc: "# GitHub skill for reviewing structure PRs" },
+  { path: "│  │  └─ review-learning-repo-pr/", desc: "# GitHub skill for reviewing PRs that change the repo's learning structure" },
   { path: "│  │     ├─ assets/", desc: "# Reusable review output resources" },
   { path: "│  │     │  └─ review-template.md", desc: "# Template for writing PR review findings" },
   { path: "│  │     ├─ references/", desc: "# Supporting docs for the review skill" },
@@ -78,6 +47,7 @@ const treeData = [
   { path: "│  └─ copilot-instructions.md", desc: "# Main repo-wide GitHub Copilot instructions" },
   { path: "│", desc: "" },
   { path: "├─ skills/", desc: "# External/shared skills for users of the repo and outside agents", accent: "accent-shared" },
+  { path: "│  ├─ README.md", desc: "# Overview of the available shared skills" },
   { path: "│  ├─ use-this-repo/", desc: "# Shared skill for understanding the repo structure and layers" },
   { path: "│  │  ├─ references/", desc: "# Supporting docs for understanding the repo" },
   { path: "│  │  │  └─ repo-map.md", desc: "# Explanation of the repo layers and what each one is for" },
@@ -95,63 +65,46 @@ const treeData = [
   { path: "│     │  └─ quickstart-check.sh", desc: "# Optional script for checking a target repo's starter structure" },
   { path: "│     └─ SKILL.md", desc: "# Main shared skill definition for adoption planning" },
   { path: "│", desc: "" },
-  { path: "├─ docs/", desc: "# Public documentation site for GitHub Pages and Google indexing" },
+  { path: "├─ docs/", desc: "# Public documentation site for GitHub Pages and search indexing" },
   { path: "│  ├─ _config.yml", desc: "# GitHub Pages / Jekyll site configuration" },
-  { path: "│  ├─ index.md", desc: "# Main landing page of the docs site" },
+  { path: "│  ├─ index.html", desc: "# Published copy of src/index.html for GitHub Pages" },
+  { path: "│  ├─ styles.css", desc: "# Published copy of src/styles.css" },
+  { path: "│  ├─ app.js", desc: "# Published copy of src/app.js" },
+  { path: "│  ├─ read.md", desc: "# Markdown overview page, published at /overview/" },
   { path: "│  ├─ repo-structure.md", desc: "# Page explaining the repository structure and each main layer" },
-  { path: "│  ├─ claude-vs-copilot.md", desc: "# Page comparing the Claude-specific and Copilot-specific parts" },
-  { path: "│  ├─ getting-started.md", desc: "# Page showing how to use this repo as a starter/reference" },
+  { path: "│  ├─ claude-vs-copilot.md", desc: "# Page comparing the Claude, GitHub Copilot, and Codex parts" },
+  { path: "│  ├─ getting-started.md", desc: "# Page showing how to use this repo as a starter, reference, or learning repo" },
+  { path: "│  ├─ googlecad1e2aef0d47fd8.html", desc: "# Google Search Console verification file" },
   { path: "│  ├─ robots.txt", desc: "# Search engine crawler instructions for the public docs site" },
   { path: "│  └─ sitemap.xml", desc: "# List of site pages to help search engines discover them" },
+  { path: "│", desc: "" },
+  { path: "├─ public/", desc: "# Static assets used by the README" },
+  { path: "│  └─ assets/", desc: "" },
+  { path: "│     └─ igniteui.svg", desc: "# Repository svg" },
   { path: "│", desc: "" },
   { path: "├─ scripts/", desc: "# Shared repo utility scripts" },
   { path: "│  └─ hooks/", desc: "# Helper scripts used by Claude, GitHub/Copilot, and Codex hooks" },
   { path: "│     ├─ github-session-start-check.sh", desc: "# Bash sessionStart check for GitHub Copilot hooks" },
   { path: "│     └─ session-start-context.sh", desc: "# Reports the repo check result to Claude and Codex at SessionStart" },
   { path: "│", desc: "" },
-  { path: "├─ src/", desc: "# Project source area; present as the code/application folder" },
-  { path: "│  ├─ index.html", desc: "# Small HTML shell for the demo page" },
-  { path: "│  ├─ styles.css", desc: "# Minimal styles for the AI Repo Map layout" },
-  { path: "│  └─ app.js", desc: "# Small script that renders the repo map content" },
+  { path: "├─ src/", desc: "# Application source: the AI Repo Map landing page; edit here" },
+  { path: "│  ├─ index.html", desc: "# Landing page markup, metadata, and static content" },
+  { path: "│  ├─ styles.css", desc: "# Landing page styles" },
+  { path: "│  └─ app.js", desc: "# Script that renders the directory tree and page effects" },
   { path: "│", desc: "" },
   { path: "├─ AGENTS.md", desc: "# Shared agent-facing instructions for coding agents working in the repo" },
   { path: "├─ CLAUDE.md", desc: "# Main Claude-specific project guidance" },
+  { path: "├─ CONTRIBUTING.md", desc: "# Contributor workflow guidance for keeping the repo accurate and aligned" },
   { path: "├─ LEARN.md", desc: "# Course for understanding and copying the system" },
-  { path: "└─ README.md", desc: "# Main human entry point; will become the learning guide for the repo" }
-];
-
-const readingPath = [
-  'README.md — Understand the purpose and the main structure.',
-  'LEARN.md — Follow the guided course for how the pieces fit together.',
-  'AGENTS.md — See the shared working rules for agents.',
-  'CLAUDE.md — Understand Claude-specific project context.',
-  '.claude/, .github/, and .codex/ — Inspect the internal maintainer layers.',
-  '.agents/skills/ — See the cross-agent skills that Codex and Copilot discover automatically.',
-  'skills/ — Explore the reusable external workflows.',
-  'scripts/hooks/ — See how session-start context support is implemented.'
+  { path: "├─ LICENSE", desc: "# MIT license" },
+  { path: "└─ README.md", desc: "# Main human entry point" }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderLayers();
   renderTree();
-  renderPath();
   initMouseTracker();
   initScrollAnimations();
 });
-
-function renderLayers() {
-  const grid = document.getElementById('layer-grid');
-  grid.innerHTML = layers.map(layer => `
-    <article class="layer-card ${layer.className}">
-      <div class="layer-label">${layer.label}</div>
-      <h3>${layer.title}</h3>
-      <p class="layer-copy">${layer.copy}</p>
-      <ul class="file-list">
-        ${layer.files.map(file => `<li>${file}</li>`).join('')}
-      </ul>
-    </article>
-  `).join('');
-}
 
 function renderTree() {
   const treeContainer = document.getElementById('repo-tree');
@@ -162,19 +115,6 @@ function renderTree() {
         <span class="tree-path">${row.path}</span>
         <span class="tree-desc">${row.desc}</span>
       </div>
-    `;
-  }).join('');
-}
-
-function renderPath() {
-  const pathList = document.getElementById('reading-path');
-  pathList.innerHTML = readingPath.map((step, index) => {
-    const num = String(index + 1).padStart(2, '0');
-    return `
-      <li>
-        <div class="path-num">${num}</div>
-        <div class="path-text">${step}</div>
-      </li>
     `;
   }).join('');
 }
@@ -198,7 +138,7 @@ function initMouseTracker() {
 
 function initScrollAnimations() {
   const elements = document.querySelectorAll('.stagger-in');
-  
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, index) => {
       if (entry.isIntersecting) {
@@ -213,6 +153,8 @@ function initScrollAnimations() {
     rootMargin: "0px 0px -50px 0px"
   });
 
+  // Hide sections only once the observer exists, so content stays visible if JavaScript is off or fails.
+  document.documentElement.classList.add('js-anim');
   elements.forEach(el => observer.observe(el));
   
   setTimeout(() => {

@@ -8,7 +8,7 @@
 
   --accent-blue: #00A8FF;
   --accent-orange: #FF6A00;
-  --accent-magenta: #E91E63;
+  --accent-magenta: #EC407A;
   --accent-cyan: #00E5FF;
   --accent-green: #00ff62;
 
@@ -65,7 +65,8 @@ body {
 }
 
 .blink {
-  animation: blinker 1.5s linear infinite;
+  /* Three cycles end within 5 seconds (WCAG 2.2.2). */
+  animation: blinker 1.5s linear 3;
   color: var(--accent-green);
 }
 
@@ -205,20 +206,20 @@ body {
   grid-column: span 12;
 }
 
-.layer-card.claude {
-  grid-column: span 6;
+.layer-card.claude,
+.layer-card.github,
+.layer-card.codex {
+  grid-column: span 4;
 }
 
-.layer-card.github {
-  grid-column: span 6;
-}
-
+.layer-card.agents,
 .layer-card.shared {
-  grid-column: span 12;
+  grid-column: span 6;
 }
 
 @media (max-width: 900px) {
-  .layer-card.claude, .layer-card.github {
+  .layer-card.claude, .layer-card.github, .layer-card.codex,
+  .layer-card.agents, .layer-card.shared {
     grid-column: span 12;
   }
 
@@ -279,6 +280,14 @@ body {
 
 .layer-card.github {
   --card-accent: var(--accent-magenta);
+}
+
+.layer-card.codex {
+  --card-accent: var(--accent-green);
+}
+
+.layer-card.agents {
+  --card-accent: var(--accent-blue);
 }
 
 .layer-card.shared {
@@ -362,15 +371,38 @@ body {
   justify-content: space-between;
 }
 
-.stagger-in {
+.site-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.site-links a,
+.terminal-body a {
+  color: var(--accent-blue);
+}
+
+/* app.js adds .js-anim, so content stays visible when JavaScript is off or fails. */
+.js-anim .stagger-in:not(.visible) {
   opacity: 0;
   transform: translateY(20px);
+}
+
+/* Only the reveal is animated, so hiding before it never fades out. */
+.stagger-in.visible {
   transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.stagger-in.visible {
-  opacity: 1;
-  transform: translateY(0);
+@media (prefers-reduced-motion: reduce) {
+  .blink {
+    animation: none;
+  }
+
+  .js-anim .stagger-in:not(.visible) {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .terminal-window {
@@ -427,7 +459,7 @@ body {
 .tree-desc {
   color: var(--text-muted);
   white-space: nowrap;
-  opacity: 0.7;
+  opacity: 0.8;
   transition: opacity 0.2s;
 }
 
@@ -446,6 +478,14 @@ body {
 
 .tree-row.accent-shared .tree-path {
   color: var(--accent-cyan);
+}
+
+.tree-row.accent-codex .tree-path {
+  color: var(--accent-green);
+}
+
+.tree-row.accent-agents .tree-path {
+  color: var(--accent-blue);
 }
 
 .tree-row.accent-blue .tree-path {

@@ -4,7 +4,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Repo Structure // Schematic</title>
+  <title>AI Repo Structure: Build AI-Ready Repositories</title>
+  <meta name="description"
+    content="Template and course for structuring AI-ready repos: AGENTS.md, CLAUDE.md, and Claude Code, GitHub Copilot, and OpenAI Codex agents, skills, and hooks." />
+  <link rel="canonical" href="https://igniteui.github.io/ai-repo-structure/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AI Repo Structure" />
+  <meta property="og:title" content="AI Repo Structure: Build AI-Ready Repositories" />
+  <meta property="og:description"
+    content="Template and course for structuring AI-ready repos: AGENTS.md, CLAUDE.md, and Claude Code, GitHub Copilot, and OpenAI Codex agents, skills, and hooks." />
+  <meta property="og:url" content="https://igniteui.github.io/ai-repo-structure/" />
+  <meta name="twitter:card" content="summary" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -17,14 +27,14 @@
   <div class="noise-overlay"></div>
 
   <div class="schematic-wrapper">
-    <nav class="top-bar">
+    <div class="top-bar">
       <div class="sys-info">
         <span class="blink">SYS.READY</span>
         <span class="divider">//</span>
         <span id="coord-tracker">X:000 Y:000</span>
       </div>
       <div class="repo-id">ID: IGNITE-UI/AI-REPO-STRUCTURE</div>
-    </nav>
+    </div>
 
     <header class="hero stagger-in">
       <div class="hero-label">[ LEARNING REPOSITORY MAP ]</div>
@@ -38,17 +48,17 @@
         <div class="hero-actions">
           <a class="btn-brutal" href="https://github.com/IgniteUI/ai-repo-structure" target="_blank">
             <span class="btn-text">GITHUB_REPO</span>
-            <span class="btn-icon">★</span>
+            <span class="btn-icon" aria-hidden="true">★</span>
           </a>
           <a class="btn-brutal outline" href="https://github.com/IgniteUI/ai-repo-structure/blob/main/README.md"
             target="_blank">
             <span class="btn-text">READ_ME</span>
-            <span class="btn-icon">↗</span>
+            <span class="btn-icon" aria-hidden="true">↗</span>
           </a>
           <a class="btn-brutal outline" href="https://github.com/IgniteUI/ai-repo-structure/blob/main/LEARN.md"
             target="_blank">
             <span class="btn-text">COURSE_MODE</span>
-            <span class="btn-icon">↗</span>
+            <span class="btn-icon" aria-hidden="true">↗</span>
           </a>
         </div>
       </div>
@@ -63,6 +73,69 @@
         </div>
 
         <div id="layer-grid" class="bento-grid">
+          <article class="layer-card root">
+            <div class="layer-label">Shared Root</div>
+            <h3>THE CORE DIRECTORY</h3>
+            <p class="layer-copy">These files explain the repo, guide contributors, and give the main shared context before tool-specific behavior begins.</p>
+            <ul class="file-list">
+              <li>README.md — Main entry point</li>
+              <li>LEARN.md — Guided course</li>
+              <li>AGENTS.md — Shared agent rules</li>
+              <li>CLAUDE.md — Claude context</li>
+            </ul>
+          </article>
+          <article class="layer-card claude">
+            <div class="layer-label">Internal / Claude</div>
+            <h3>.claude/</h3>
+            <p class="layer-copy">Claude-specific rules, agents, skills, and settings live here. This layer supports structured Claude maintainer workflows.</p>
+            <ul class="file-list">
+              <li>rules/ — Scoped guidance</li>
+              <li>agents/ — Specialist roles</li>
+              <li>skills/ — Repeatable workflows</li>
+              <li>settings.json — Hooks config</li>
+            </ul>
+          </article>
+          <article class="layer-card github">
+            <div class="layer-label">Internal / Copilot</div>
+            <h3>.github/</h3>
+            <p class="layer-copy">GitHub/Copilot instructions, agents, skills, and hook configs live here. Hand-crafted for GitHub-side behavior.</p>
+            <ul class="file-list">
+              <li>copilot-instructions.md — Repo guidance</li>
+              <li>instructions/ — Path-specific context</li>
+              <li>agents/ — Copilot roles</li>
+              <li>hooks/ — Automation</li>
+            </ul>
+          </article>
+          <article class="layer-card codex">
+            <div class="layer-label">Internal / Codex</div>
+            <h3>.codex/</h3>
+            <p class="layer-copy">Codex custom agents and hooks live here. Codex reads AGENTS.md directly, so this layer needs no instruction file.</p>
+            <ul class="file-list">
+              <li>agents/ — Custom agents (TOML)</li>
+              <li>hooks.json — Session-start hook</li>
+            </ul>
+          </article>
+          <article class="layer-card agents">
+            <div class="layer-label">Cross-agent / Codex + Copilot</div>
+            <h3>.agents/skills/</h3>
+            <p class="layer-copy">Maintainer skills that Codex and Copilot discover automatically. Claude Code does not scan this folder.</p>
+            <ul class="file-list">
+              <li>sync-agent-layers/ — Keeps tool layers aligned</li>
+              <li>SKILL.md — Workflow definition</li>
+              <li>references/ — Supporting docs</li>
+            </ul>
+          </article>
+          <article class="layer-card shared">
+            <div class="layer-label">External / Public</div>
+            <h3>skills/</h3>
+            <p class="layer-copy">This is the reusable public-facing workflow layer. It is meant for users of the repo and outside agents, not only maintainers.</p>
+            <ul class="file-list">
+              <li>SKILL.md — Workflow definition</li>
+              <li>assets/ — Templates</li>
+              <li>references/ — Supporting docs</li>
+              <li>scripts/ — Executables</li>
+            </ul>
+          </article>
         </div>
       </section>
 
@@ -79,6 +152,8 @@
             <span class="term-cmd">tree -a -C</span>
           </div>
           <div class="terminal-body" id="repo-tree">
+            <p>The tree needs JavaScript. See the
+              <a href="https://github.com/IgniteUI/ai-repo-structure#repository-structure">full tree in the README</a>.</p>
           </div>
         </div>
       </section>
@@ -91,13 +166,27 @@
         </div>
 
         <div class="path-container">
-          <ul id="reading-path" class="reading-path">
-          </ul>
+          <ol id="reading-path" class="reading-path">
+            <li><div class="path-num">01</div><div class="path-text">README.md — Understand the purpose and the main structure.</div></li>
+            <li><div class="path-num">02</div><div class="path-text">LEARN.md — Follow the guided course for how the pieces fit together.</div></li>
+            <li><div class="path-num">03</div><div class="path-text">AGENTS.md — See the shared working rules for agents.</div></li>
+            <li><div class="path-num">04</div><div class="path-text">CLAUDE.md — Understand Claude-specific project context.</div></li>
+            <li><div class="path-num">05</div><div class="path-text">.claude/, .github/, and .codex/ — Inspect the internal maintainer layers.</div></li>
+            <li><div class="path-num">06</div><div class="path-text">.agents/skills/ — See the cross-agent skills that Codex and Copilot discover automatically.</div></li>
+            <li><div class="path-num">07</div><div class="path-text">skills/ — Explore the reusable external workflows.</div></li>
+            <li><div class="path-num">08</div><div class="path-text">scripts/hooks/ — See how session-start context support is implemented.</div></li>
+          </ol>
         </div>
       </section>
     </main>
 
     <footer class="terminal-footer">
+      <nav class="site-links" aria-label="Guides">
+        <a href="./overview/">Overview</a>
+        <a href="./repo-structure/">Repo structure</a>
+        <a href="./claude-vs-copilot/">Claude vs Copilot vs Codex</a>
+        <a href="./getting-started/">Getting started</a>
+      </nav>
       <div class="status-line">
         <span>> EOF reached.</span>
         <span>No frameworks. Vanilla!</span>

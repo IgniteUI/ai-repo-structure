@@ -53,6 +53,10 @@ When adding, renaming, or removing files or folders:
 - keep `.claude/`, `.github/`, `.codex/`, `.agents/skills/`, and `skills/` clearly separated
 - make sure the repo still teaches the same structure it actually contains
 
+## If you change the landing page
+
+Edit the application source in `src/`. GitHub Pages publishes `docs/`, so copy `index.html`, `styles.css`, and `app.js` from `src/` into `docs/` unchanged. The two copies must stay identical.
+
 ## If you add or update a skill
 
 Use this structure. Only `SKILL.md` is required; add `scripts/`, `references/`, and `assets/` when the skill needs them:

@@ -1,8 +1,6 @@
-title: ai-repo-structure
-description: A practical learning repository that shows how to structure a real AI-enabled repo using AGENTS.md, CLAUDE.md, Claude rules and skills, GitHub Copilot instructions, agents, skills, and shared external skills.
+title: AI Repo Structure
+description: A practical learning repository that shows how to structure a real AI-enabled repo using AGENTS.md, CLAUDE.md, and Claude Code, GitHub Copilot, and OpenAI Codex agents, skills, and hooks.
 theme: minima
 markdown: kramdown
-plugins:
-  - jekyll-sitemap
 url: "https://igniteui.github.io"
 baseurl: "/ai-repo-structure"
