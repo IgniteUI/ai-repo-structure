@@ -54,12 +54,14 @@ The full decision table, with when to use each one and what not to use it for, i
 | --- | --- | --- | --- |
 | Shared root | [`README.md`](./README.md), [`LEARN.md`](./LEARN.md), [`AGENTS.md`](./AGENTS.md), [`CLAUDE.md`](./CLAUDE.md), [`CONTRIBUTING.md`](./CONTRIBUTING.md) | Humans and all agents | Entry point, course, shared agent rules, Claude rules, contributor workflow |
 | Internal Claude | [`.claude/`](./.claude) | Maintainers using Claude Code | A scoped rule, the `learning-repo-maintainer` agent, the `validate-learning-repo` skill, a `SessionStart` hook in `settings.json` |
-| Internal GitHub/Copilot | [`.github/`](./.github) | Maintainers using GitHub Copilot | Repo-wide and path-specific instructions, the `learning-repo-maintainer` agent, the `review-learning-repo-pr` skill, an optional `sessionStart` hook for Copilot coding agent |
+| Internal GitHub/Copilot | [`.github/`](./.github) | Maintainers using GitHub Copilot | Repo-wide and path-specific instructions, the `learning-repo-maintainer` agent, the `review-learning-repo-pr` skill, an optional `sessionStart` hook for Copilot CLI and Copilot cloud agent |
 | Shared skills | [`skills/`](./skills) | Users of the repo and outside agents | [`use-this-repo`](./skills/use-this-repo/SKILL.md) to understand the structure, [`adopt-this-repo`](./skills/adopt-this-repo/SKILL.md) to plan adoption in another project |
 | Hook support | [`scripts/hooks/`](./scripts/hooks) | Hook runtimes | Small scripts that give agents session-start context and checks |
 | Docs site | [`docs/`](./docs) | Search and browsing | The public [GitHub Pages site](https://igniteui.github.io/ai-repo-structure/) |
 
 The Claude and Copilot layers mirror each other on purpose, so you can compare the same idea in both tools.
+
+`skills/` is a distribution layer: coding agents do not load it automatically. To use a skill, copy it into `.claude/skills/` or `.github/skills/`, or point an agent at its `SKILL.md`.
 
 <details>
 <summary><strong>Show how the layers connect (diagram)</strong></summary>
@@ -112,7 +114,7 @@ It returns a plan split into must-have, good-to-have, and optional, with what to
 | --- | --- |
 | Shared root | [1. README.md](./LEARN.md#module-1--readmemd) · [2. AGENTS.md](./LEARN.md#module-2--agentsmd) |
 | Claude | [3. CLAUDE.md](./LEARN.md#module-3--claudemd) · [4. Rules](./LEARN.md#module-4--claude-rules) · [5. Agents](./LEARN.md#module-5--claude-agents) · [6. Skills](./LEARN.md#module-6--claude-skills) · [7. Settings and hooks](./LEARN.md#module-7--claude-settings-and-hooks) |
-| GitHub Copilot | [8. Repo-wide instructions](./LEARN.md#module-8--github-copilot-repo-wide-instructions) · [9. Path-specific instructions](./LEARN.md#module-9--github-path-specific-instructions) · [10. Agents](./LEARN.md#module-10--github-agents) · [11. Skills](./LEARN.md#module-11--github-skills) · [12. Coding agent hooks](./LEARN.md#module-12--github-copilot-coding-agent-hooks) |
+| GitHub Copilot | [8. Repo-wide instructions](./LEARN.md#module-8--github-copilot-repo-wide-instructions) · [9. Path-specific instructions](./LEARN.md#module-9--github-path-specific-instructions) · [10. Agents](./LEARN.md#module-10--github-agents) · [11. Skills](./LEARN.md#module-11--github-skills) · [12. Hooks](./LEARN.md#module-12--github-copilot-hooks) |
 | Shared | [13. Shared skills](./LEARN.md#module-13--shared-skills) · [14. Hook support scripts](./LEARN.md#module-14--hook-support-scripts) |
 
 It ends with [a good rollout order](./LEARN.md#a-good-rollout-order) and [common mistakes](./LEARN.md#common-mistakes).
@@ -124,7 +126,7 @@ It ends with [a good rollout order](./LEARN.md#a-good-rollout-order) and [common
 1. **AI files should have clear roles.** Not everything belongs in one giant instruction file.
 2. **Internal and external AI layers should be separate.** Maintainer AI (`.claude/`, `.github/`) is different from user-facing AI (`skills/`).
 3. **Each file type does a different job.** Rules and instructions are guidance, agents are specialized roles, skills are reusable workflows, and hooks are optional deterministic automation for supported runtimes.
-4. **Hooks stay small and low-risk.** Here they only orient an agent at session start: Claude receives repo context, and Copilot coding agent can run a quick check of core files.
+4. **Hooks stay small and low-risk.** Here they only orient an agent at session start: Claude receives repo context, and Copilot CLI or cloud agent can run a quick check of core files.
 5. **A template repo should still feel real.** Meaningful files and realistic relationships teach more than an empty folder tree.
 
 ---
@@ -212,7 +214,7 @@ ai-repo-structure/
 ├─ scripts/                                      # Shared repo utility scripts
 │  └─ hooks/                                     # Helper scripts used by Claude and GitHub/Copilot hooks
 │     ├─ claude-session-context.sh               # Emits repo context for Claude SessionStart
-│     └─ github-session-start-check.sh           # Bash sessionStart check for GitHub Copilot coding agent hooks
+│     └─ github-session-start-check.sh           # Bash sessionStart check for GitHub Copilot hooks
 │
 ├─ src/                                          # Project source area; currently the AI Repo Map demo page
 │  ├─ index.html                                 # Small HTML shell for the demo page

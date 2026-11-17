@@ -60,7 +60,7 @@ Custom Copilot agents.
 Reusable Copilot workflows.
 
 ### `.github/hooks/`
-Optional GitHub Copilot coding agent hook.
+Optional GitHub Copilot hook.
 
 ## External/shared layer
 

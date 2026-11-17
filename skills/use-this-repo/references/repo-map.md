@@ -37,7 +37,7 @@ Typical contents:
 - `instructions/` for path-specific Copilot guidance
 - `agents/` for custom GitHub Copilot agents
 - `skills/` for GitHub Copilot workflows
-- `hooks/` for optional Copilot coding agent hook configs
+- `hooks/` for optional Copilot hook configs
 
 ## External/shared layer
 

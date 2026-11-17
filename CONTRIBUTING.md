@@ -53,7 +53,7 @@ When adding, renaming, or removing files or folders:
 
 ## If you add or update a skill
 
-Use this structure:
+Use this structure. Only `SKILL.md` is required; add `scripts/`, `references/`, and `assets/` when the skill needs them:
 
 ```text
 <skill-name>/

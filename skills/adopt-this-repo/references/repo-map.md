@@ -33,7 +33,7 @@ This repository is split into a few layers that do different jobs.
 - `.github/skills/`
   GitHub Copilot maintainer workflows.
 - `.github/hooks/`
-  Optional Copilot coding agent hook configs.
+  Optional Copilot hook configs.
 
 ## Shared external layer
 

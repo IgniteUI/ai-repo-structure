@@ -36,7 +36,7 @@ This repo is currently a documentation-first template repo.
 ## Code and docs conventions
 - Keep examples short and practical.
 - Prefer clear folder names and predictable file names.
-- When adding a skill, use this structure:
+- When adding a skill, use this structure. Only `SKILL.md` is required; add `scripts/`, `references/`, and `assets/` when needed:
 
 ```
 <skill-name>/

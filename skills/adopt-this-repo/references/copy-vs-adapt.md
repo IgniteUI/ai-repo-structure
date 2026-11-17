@@ -5,7 +5,7 @@ Use this file to decide what should move over directly and what should change fo
 ## Usually copy as-is
 
 - the idea of separate root instruction files for shared and tool-specific guidance
-- the standard skill folder shape:
+- the standard skill folder shape (only `SKILL.md` is required):
   - `SKILL.md`
   - `assets/`
   - `references/`

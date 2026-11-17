@@ -32,9 +32,9 @@ GitHub Copilot repo files usually include:
 - `.github/skills/`
 - `.github/hooks/`
 
-Use these for Copilot-specific instructions, scoped guidance, agents, skills, and optional Copilot coding agent hooks.
+Use these for Copilot-specific instructions, scoped guidance, agents, skills, and optional Copilot hooks.
 
-The `.github/hooks/` folder is specifically for GitHub Copilot coding agent and GitHub Copilot CLI hook configs. It is not a generic GitHub repository feature and it is separate from GitHub Actions.
+The `.github/hooks/` folder is specifically for GitHub Copilot hook configs, which run in Copilot CLI and Copilot cloud agent. It is not a generic GitHub repository feature and it is separate from GitHub Actions.
 
 ## Shared layer
 

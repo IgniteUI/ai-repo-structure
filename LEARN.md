@@ -37,7 +37,7 @@ This course is written to be simple:
 - [Module 9 — GitHub path-specific instructions](#module-9--github-path-specific-instructions)
 - [Module 10 — GitHub agents](#module-10--github-agents)
 - [Module 11 — GitHub skills](#module-11--github-skills)
-- [Module 12 — GitHub Copilot coding agent hooks](#module-12--github-copilot-coding-agent-hooks)
+- [Module 12 — GitHub Copilot hooks](#module-12--github-copilot-hooks)
 - [Module 13 — Shared skills](#module-13--shared-skills)
 - [Module 14 — Hook support scripts](#module-14--hook-support-scripts)
 - [A good rollout order](#a-good-rollout-order)
@@ -53,7 +53,7 @@ By the end, you should be able to build a repo with:
 - shared agent instructions in `AGENTS.md`
 - Claude-specific project context in `CLAUDE.md`
 - internal Claude rules, agents, skills, and hooks in `.claude/`
-- internal GitHub Copilot instructions, agents, skills, and optional Copilot coding agent hooks in `.github/`
+- internal GitHub Copilot instructions, agents, skills, and optional Copilot hooks in `.github/`
 - external/shared skills in `skills/`
 
 The main idea is simple:
@@ -360,6 +360,8 @@ Its job is to tell Claude:
 - what conventions must stay stable
 - where Claude-specific extensions live
 
+Claude Code reads `AGENTS.md` directly only when the repo has no `CLAUDE.md` or `CLAUDE.local.md` (Claude Code v2.1.277 or later). If you keep both files, start `CLAUDE.md` with an `@AGENTS.md` import: Claude reads the shared rules first, then the Claude-specific guidance below the import. A symlink (`ln -s AGENTS.md CLAUDE.md`) also works when there is no Claude-specific content, but use the import if anyone works on Windows.
+
 ## What the description is for
 
 The opening description in `CLAUDE.md` should give Claude the minimum orientation it needs before doing work.
@@ -390,6 +392,8 @@ Avoid:
 ```md
 # CLAUDE.md
 
+@AGENTS.md
+
 ## Repo identity
 This is a <type of repo>.
 
@@ -415,6 +419,8 @@ This is a <type of repo>.
 
 ```md
 # CLAUDE.md
+
+@AGENTS.md
 
 ## Repo identity
 This is a product application repository with a small documentation layer and an internal AI-maintainer layer.
@@ -669,6 +675,8 @@ A good skill folder often contains:
 - `assets/` — reusable output templates
 - `references/` — checklists or short supporting docs
 - `scripts/` — helper scripts
+
+Only `SKILL.md` is required. The other folders are optional.
 
 ## Template
 
@@ -958,6 +966,8 @@ Use them when repo-wide instructions would be too broad.
 
 GitHub uses the `applyTo` frontmatter to target files by glob, so you can scope guidance instead of pushing everything into one always-on file. It plays the same role as `paths` in Claude rules.
 
+On GitHub.com, path-specific instructions are used only by Copilot cloud agent and Copilot code review. To hide a file from one of them, add `excludeAgent: "code-review"` or `excludeAgent: "cloud-agent"` to its frontmatter.
+
 ## What the description is for
 
 The description should explain:
@@ -1031,6 +1041,8 @@ It should clearly say:
 - what this agent specializes in
 - when it should be used
 - what type of result it should produce
+
+Copilot can choose an agent automatically from its description. Set `disable-model-invocation: true` to require manual selection instead. It replaces the retired `infer` property.
 
 ## Best practice
 
@@ -1234,15 +1246,15 @@ A short review containing:
 
 ---
 
-# Module 12 — GitHub Copilot coding agent hooks
+# Module 12 — GitHub Copilot hooks
 
 ## What this file is for
 
-GitHub Copilot coding agent hooks are for optional automatic actions at known events.
+GitHub Copilot hooks are for optional automatic actions at known events.
 
 This is not a general GitHub repository feature and it is not the same thing as GitHub Actions.
 
-In this repo, `.github/hooks/*.json` is used only for the official Copilot coding agent and GitHub Copilot CLI hook format.
+In this repo, `.github/hooks/*.json` uses the official Copilot hook format. Hooks run in Copilot CLI and Copilot cloud agent, and are in preview in VS Code. Copilot CLI also reads hooks defined in `.claude/settings.json`.
 
 Use them for safe, deterministic automation.
 
@@ -1265,7 +1277,7 @@ Use hooks for:
 When you document them, say clearly that they are:
 
 - optional and advanced
-- specific to GitHub Copilot coding agent and GitHub Copilot CLI
+- supported in Copilot CLI and Copilot cloud agent (preview in VS Code)
 - different from repo-wide instructions, agents, skills, and GitHub Actions
 
 Do not use hooks for:
@@ -1319,6 +1331,8 @@ This repo uses `sessionStart` for a small project-state check. It validates that
 ## What this file is for
 
 The top-level `skills/` folder is the external/shared layer.
+
+It is a distribution layer: coding agents do not load it automatically. To use a skill, copy it into `.claude/skills/` or `.github/skills/`, or point an agent at its `SKILL.md`.
 
 Use it for workflows that are useful to:
 

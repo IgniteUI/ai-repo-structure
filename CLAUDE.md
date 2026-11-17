@@ -32,7 +32,7 @@ It shows how to combine:
 - Put user-facing or portable skills in `skills/<skill-name>/`.
 
 ## Skill layout
-Every skill should use this structure:
+Every skill needs `SKILL.md`. Add `scripts/`, `references/`, and `assets/` only when the skill needs them:
 
 ```
 <skill-name>/

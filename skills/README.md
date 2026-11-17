@@ -4,6 +4,8 @@ These skills are for users of the repository and for outside agents working with
 
 They are shared, user-facing skills.
 
+This folder is a distribution layer: coding agents do not load it automatically. To use a skill, copy it into `.claude/skills/` or `.github/skills/`, or point an agent at its `SKILL.md`.
+
 ## Available skills
 
 ### `use-this-repo`
