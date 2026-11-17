@@ -1,171 +1,142 @@
 <div align="center">
 
-<img src="./public/assets/avatar.png" alt="avatar" width="260" height="260" />
+<img src="./public/assets/avatar.png" alt="ai-repo-structure avatar" width="260" height="260" />
 
 # ai-repo-structure
 
-**A practical learning repository for structuring a real AI-enabled project**  
-**with shared instructions, Claude-specific configuration, GitHub/Copilot configuration, hooks, and reusable skills.**
+**A working reference for structuring AI-enabled repositories:**  
+**`AGENTS.md`, `CLAUDE.md`, instructions, custom agents, skills, and hooks, each in the right place.**
 
 <br/>
 
-[![Status](https://img.shields.io/badge/status-active-2563eb?style=for-the-badge)](#current-status)
-[![Type](https://img.shields.io/badge/type-learning%20repo-111827?style=for-the-badge)](#overview)
-[![Template](https://img.shields.io/badge/template-ai%20repo-0f766e?style=for-the-badge)](#who-this-is-for)
-[![Learn](https://img.shields.io/badge/learn-course-1d4ed8?style=for-the-badge)](./LEARN.md)
-[![AGENTS.md](https://img.shields.io/badge/AGENTS.md-supported-5b21b6?style=for-the-badge)](#shared-root-layer)
-[![Claude](https://img.shields.io/badge/claude-configured-d97706?style=for-the-badge)](#internal-claude-layer)
-[![GitHub%20Copilot](https://img.shields.io/badge/github%20copilot-configured-000000?style=for-the-badge&logo=github)](#internal-githubcopilot-layer)
-[![Skills](https://img.shields.io/badge/skills-shared-0891b2?style=for-the-badge)](#shared-external-skills)
-[![Hooks](https://img.shields.io/badge/hooks-session--start-16a34a?style=for-the-badge)](#what-hooks-are-doing-here)
+[![GitHub stars](https://img.shields.io/github/stars/IgniteUI/ai-repo-structure?style=for-the-badge&logo=github&label=Star%20the%20Repo)](https://github.com/IgniteUI/ai-repo-structure)
+[![MIT License](https://img.shields.io/badge/Open%20Source-MIT-22c55e?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](./LICENSE)
+[![Learning Course](https://img.shields.io/badge/Learning-Course-2563eb?style=for-the-badge&logo=bookstack&logoColor=white)](./LEARN.md)
+[![Live Docs](https://img.shields.io/badge/Explore-Live%20Docs-7c3aed?style=for-the-badge&logo=readthedocs&logoColor=white)](https://igniteui.github.io/ai-repo-structure/)
+
+[Course](./LEARN.md) · [Docs site](https://igniteui.github.io/ai-repo-structure/) · [Quick start](#quick-start) · [Contributing](./CONTRIBUTING.md)
 
 </div>
 
 ---
 
-## Overview
+## Why this exists
 
-`ai-repo-structure` is a real learning repository that demonstrates how to structure a project around modern AI coding tools in a way that is practical, understandable, and reusable from the AI agents.
+Adding AI coding tools to a repo usually starts with one instruction file and grows into a mess:
 
-This is not just a mock folder tree.  
-It is a working reference repo whose own AI setup is part of the lesson.
+- one giant instruction file that tries to do every job
+- no clear answer to what belongs in `AGENTS.md`, `CLAUDE.md`, rules, agents, skills, or hooks
+- Claude Code and GitHub Copilot setups that drift apart or duplicate each other
 
-It shows how to combine:
+This repository shows a clean alternative. It is a **template**, a **reference implementation**, and a **learning repo** at the same time: its own AI setup is real, in use, and part of the lesson.
 
-- shared agent instructions with [`AGENTS.md`](./AGENTS.md)
-- Claude-specific guidance with [`CLAUDE.md`](./CLAUDE.md)
-- contributor workflow guidance with [`CONTRIBUTING.md`](./CONTRIBUTING.md)
-- internal Claude rules, agents, skills, and hooks in [`.claude/`](./.claude)
-- internal GitHub Copilot instructions, agents, skills, and optional Copilot coding agent hooks in [`.github/`](./.github)
-- external/shared skills in [`skills/`](./skills)
-- course for understanding and copying the system [`LEARN.md`](./LEARN.md)
+It is for developers building an AI-enabled repo from scratch, teams cleaning up an existing AI setup, and maintainers who want internal AI helpers for review, structure, and documentation.
 
 ---
 
-## Quick navigation
+## Which file does which job
 
-- [ai-repo-structure](#ai-repo-structure)
-  - [Overview](#overview)
-  - [Quick navigation](#quick-navigation)
-  - [Who this is for](#who-this-is-for)
-  - [Learn this repo](#learn-this-repo)
-  - [Why this repo exists](#why-this-repo-exists)
-  - [How to read this repo](#how-to-read-this-repo)
-  - [How the AI layers connect](#how-the-ai-layers-connect)
-  - [This diagram shows which files explain the repo, which files guide tools, and which folders contain reusable workflows or automation.](#this-diagram-shows-which-files-explain-the-repo-which-files-guide-tools-and-which-folders-contain-reusable-workflows-or-automation)
-  - [Current project structure](#current-project-structure)
-  - [Shared root layer](#shared-root-layer)
-    - [`README.md`](#readmemd)
-    - [`AGENTS.md`](#agentsmd)
-    - [`CLAUDE.md`](#claudemd)
-    - [`CONTRIBUTING.md`](#contributingmd)
-  - [Internal Claude layer](#internal-claude-layer)
-    - [`.claude/agents/`](#claudeagents)
-    - [`.claude/rules/`](#clauderules)
-    - [`.claude/skills/`](#claudeskills)
-      - [`.claude/skills/validate-learning-repo/`](#claudeskillsvalidate-learning-repo)
-    - [`.claude/settings.json`](#claudesettingsjson)
-  - [Internal GitHub/Copilot layer](#internal-githubcopilot-layer)
-    - [`.github/copilot-instructions.md`](#githubcopilot-instructionsmd)
-    - [`.github/instructions/`](#githubinstructions)
-    - [`.github/agents/`](#githubagents)
-    - [`.github/hooks/`](#githubhooks)
-    - [`.github/skills/`](#githubskills)
-      - [`.github/skills/review-learning-repo-pr/`](#githubskillsreview-learning-repo-pr)
-  - [Shared external skills](#shared-external-skills)
-    - [`skills/use-this-repo/`](#skillsuse-this-repo)
-    - [`skills/adopt-this-repo/`](#skillsadopt-this-repo)
-  - [Support scripts](#support-scripts)
-    - [`scripts/hooks/`](#scriptshooks)
-  - [What hooks are doing here](#what-hooks-are-doing-here)
-  - [What this repo is demonstrating](#what-this-repo-is-demonstrating)
-  - [Current status](#current-status)
-  - [One-line description](#one-line-description)
+| File or folder | Job |
+| --- | --- |
+| `AGENTS.md` | Shared always-on rules for all coding agents |
+| `CLAUDE.md` | Claude-only always-on rules |
+| `.github/copilot-instructions.md` | Copilot-only always-on rules |
+| `.instructions.md` / `.claude/rules/` | Scoped rules for certain files or folders |
+| Custom agents | Specialist roles |
+| Skills (`SKILL.md`) | Reusable multi-step workflows |
+| Hooks | Small, deterministic actions at known events |
+
+The full decision table, with when to use each one and what not to use it for, is in [LEARN.md](./LEARN.md#decision-table-when-to-use-what).
 
 ---
 
+## What's inside
 
-## Who this is for
+| Layer | Location | For | Contains |
+| --- | --- | --- | --- |
+| Shared root | [`README.md`](./README.md), [`LEARN.md`](./LEARN.md), [`AGENTS.md`](./AGENTS.md), [`CLAUDE.md`](./CLAUDE.md), [`CONTRIBUTING.md`](./CONTRIBUTING.md) | Humans and all agents | Entry point, course, shared agent rules, Claude rules, contributor workflow |
+| Internal Claude | [`.claude/`](./.claude) | Maintainers using Claude Code | A scoped rule, the `learning-repo-maintainer` agent, the `validate-learning-repo` skill, a `SessionStart` hook in `settings.json` |
+| Internal GitHub/Copilot | [`.github/`](./.github) | Maintainers using GitHub Copilot | Repo-wide and path-specific instructions, the `learning-repo-maintainer` agent, the `review-learning-repo-pr` skill, an optional `sessionStart` hook for Copilot coding agent |
+| Shared skills | [`skills/`](./skills) | Users of the repo and outside agents | [`use-this-repo`](./skills/use-this-repo/SKILL.md) to understand the structure, [`adopt-this-repo`](./skills/adopt-this-repo/SKILL.md) to plan adoption in another project |
+| Hook support | [`scripts/hooks/`](./scripts/hooks) | Hook runtimes | Small scripts that give agents session-start context and checks |
+| Docs site | [`docs/`](./docs) | Search and browsing | The public [GitHub Pages site](https://igniteui.github.io/ai-repo-structure/) |
 
-This repo is for:
+The Claude and Copilot layers mirror each other on purpose, so you can compare the same idea in both tools.
 
-- developers building an AI-enabled repo from scratch
-- teams that want a cleaner AI setup
-- people learning what each AI-related file is for
-- maintainers who want internal AI helpers for review, structure, and documentation
-- anyone who wants a repo that is both a template and a teaching example
+<details>
+<summary><strong>Show how the layers connect (diagram)</strong></summary>
 
----
+<br/>
 
-## Learn this repo
+![How the AI layers connect](./public/assets/mermaid-diagram.png)
 
-Want the guided version instead of just the structure?
+The diagram shows which files explain the repo, which files guide tools, and which folders contain reusable workflows or automation.
 
-Read [`LEARN.md`](./LEARN.md) for a short course that explains:
-
-- what each AI layer is for
-- a decision table for when to use each instruction type
-- how the files relate to each other
-- best practices for writing them
-- templates you can copy
-- real examples you can adapt
+</details>
 
 ---
 
-## Why this repo exists
+## Quick start
 
-This repository helps answer questions like:
+Clone the repository:
 
-- What is `AGENTS.md` for?
-- What belongs in `CLAUDE.md`?
-- What is the difference between rules, instructions, agents, skills, and hooks?
-- How do I keep an AI repo clean instead of chaotic?
-- How do I build a template repo that is also a real example?
-
-So this repo has three jobs at the same time:
-
-- **template repo**
-- **reference implementation**
-- **learning repo**
-
----
-
-## How to read this repo
-
-A simple reading order is:
-
-1. [`README.md`](./README.md)
-2. [`LEARN.md`](./LEARN.md)
-3. [`AGENTS.md`](./AGENTS.md)
-4. [`CLAUDE.md`](./CLAUDE.md)
-5. [`CONTRIBUTING.md`](./CONTRIBUTING.md)
-6. [`.claude/`](./.claude)
-7. [`.github/`](./.github)
-8. [`skills/`](./skills)
-9. [`scripts/hooks/`](./scripts/hooks)
-
----
-
-## How the AI layers connect
-
-- `README.md` introduces the repo and points people to the right places.
-- `LEARN.md` is the guided course for understanding and copying the system.
-- `AGENTS.md` gives shared guidance for coding agents.
-- `CLAUDE.md` gives Claude project-specific context.
-- `CONTRIBUTING.md` explains how to make changes without breaking the repo's teaching value.
-- `.claude/` contains Claude-only maintainer pieces.
-- `.github/` contains GitHub/Copilot-only maintainer pieces.
-- `skills/` contains shared reusable workflows.
-- `scripts/hooks/` supports hook automation for Claude and GitHub/Copilot.
-  
-![diagram](./public/assets/mermaid-diagram.png)
-
-This diagram shows which files explain the repo, which files guide tools, and which folders contain reusable workflows or automation.
----
-
-## Current project structure
-
+```bash
+git clone https://github.com/IgniteUI/ai-repo-structure.git
 ```
+
+Then pick a path.
+
+**1. Learn the structure.** Read [LEARN.md](./LEARN.md). Each module explains one file type and gives you a template and a real example from this repo.
+
+**2. Copy the minimal setup.** Most repos only need this to start:
+
+- `README.md`
+- `AGENTS.md`
+- one always-on file for the tool you use: `CLAUDE.md` or `.github/copilot-instructions.md`
+
+Start from the templates in [Module 2](./LEARN.md#module-2--agentsmd), [Module 3](./LEARN.md#module-3--claudemd), and [Module 8](./LEARN.md#module-8--github-copilot-repo-wide-instructions). Add rules, agents, skills, and hooks only when a real need appears. The [adoption levels](./skills/adopt-this-repo/references/adoption-levels.md) describe when to move from `minimal` to `practical` or `full`.
+
+**3. Let your coding agent plan it.** Point Claude Code, GitHub Copilot, or another agent at the adoption skill:
+
+```text
+Follow skills/adopt-this-repo/SKILL.md to create an adoption plan for my project at <path-to-your-repo>.
+```
+
+It returns a plan split into must-have, good-to-have, and optional, with what to copy now, adapt later, or skip.
+
+---
+
+## The course
+
+[LEARN.md](./LEARN.md) is a practical course with 14 modules. Every module covers what the file is for, how to write its description, best practices, a **copyable template**, and a **real example** from this repository.
+
+| Area | Modules |
+| --- | --- |
+| Shared root | [1. README.md](./LEARN.md#module-1--readmemd) · [2. AGENTS.md](./LEARN.md#module-2--agentsmd) |
+| Claude | [3. CLAUDE.md](./LEARN.md#module-3--claudemd) · [4. Rules](./LEARN.md#module-4--claude-rules) · [5. Agents](./LEARN.md#module-5--claude-agents) · [6. Skills](./LEARN.md#module-6--claude-skills) · [7. Settings and hooks](./LEARN.md#module-7--claude-settings-and-hooks) |
+| GitHub Copilot | [8. Repo-wide instructions](./LEARN.md#module-8--github-copilot-repo-wide-instructions) · [9. Path-specific instructions](./LEARN.md#module-9--github-path-specific-instructions) · [10. Agents](./LEARN.md#module-10--github-agents) · [11. Skills](./LEARN.md#module-11--github-skills) · [12. Coding agent hooks](./LEARN.md#module-12--github-copilot-coding-agent-hooks) |
+| Shared | [13. Shared skills](./LEARN.md#module-13--shared-skills) · [14. Hook support scripts](./LEARN.md#module-14--hook-support-scripts) |
+
+It ends with [a good rollout order](./LEARN.md#a-good-rollout-order) and [common mistakes](./LEARN.md#common-mistakes).
+
+---
+
+## Core ideas
+
+1. **AI files should have clear roles.** Not everything belongs in one giant instruction file.
+2. **Internal and external AI layers should be separate.** Maintainer AI (`.claude/`, `.github/`) is different from user-facing AI (`skills/`).
+3. **Each file type does a different job.** Rules and instructions are guidance, agents are specialized roles, skills are reusable workflows, and hooks are optional deterministic automation for supported runtimes.
+4. **Hooks stay small and low-risk.** Here they only orient an agent at session start: Claude receives repo context, and Copilot coding agent can run a quick check of core files.
+5. **A template repo should still feel real.** Meaningful files and realistic relationships teach more than an empty folder tree.
+
+---
+
+## Repository structure
+
+<details>
+<summary><strong>Show the full repository tree</strong></summary>
+
+```text
 ai-repo-structure/
 ├─ .claude/                                      # Internal Claude layer for repo maintainers
 │  ├─ agents/                                    # Claude subagents specialized for this repo
@@ -191,7 +162,7 @@ ai-repo-structure/
 │  ├─ hooks/                                     # GitHub/Copilot workspace hook configs
 │  │  └─ session-start-check.json                # Official sessionStart hook config for validating core repo guidance
 │  ├─ skills/                                    # GitHub Copilot skills for repeatable maintainer workflows
-│  │  └─ review-learning-repo-pr/                # GitHub skill for reviewing PRs that change the repo’s learning structure
+│  │  └─ review-learning-repo-pr/                # GitHub skill for reviewing PRs that change the repo's learning structure
 │  │     ├─ assets/                              # Reusable review output resources
 │  │     │  └─ review-template.md                # Template for writing PR review findings
 │  │     ├─ references/                          # Supporting docs for the review skill
@@ -202,6 +173,7 @@ ai-repo-structure/
 │  └─ copilot-instructions.md                    # Main repo-wide GitHub Copilot instructions
 │
 ├─ skills/                                       # External/shared skills for users of the repo and outside agents
+│  ├─ README.md                                  # Overview of the available shared skills
 │  ├─ use-this-repo/                             # Shared skill for understanding the repo structure and layers
 │  │  ├─ assets/                                 # Reusable templates for user-facing outputs
 │  │  │  └─ adoption-plan-template.md            # Template for suggesting how someone should adopt this repo
@@ -221,327 +193,53 @@ ai-repo-structure/
 │     │  └─ quickstart-check.sh                  # Optional script for checking a target repo's starter structure
 │     └─ SKILL.md                                # Main shared skill definition for adoption planning
 │
-├─ docs/                                         # Public documentation site for GitHub Pages and Google indexing
-│  ├─ _config.yml                                # GitHub Pages / Jekyll site configuration 
-│  ├─ index.md                                   # Main landing page of the docs site
+├─ docs/                                         # Public documentation site for GitHub Pages and search indexing
+│  ├─ _config.yml                                # GitHub Pages / Jekyll site configuration
+│  ├─ index.html                                 # Interactive landing page (AI Repo Map)
+│  ├─ styles.css                                 # Styles for the landing page
+│  ├─ app.js                                     # Script that renders the landing page content
+│  ├─ read.md                                    # Markdown overview page of the repository
 │  ├─ repo-structure.md                          # Page explaining the repository structure and each main layer
 │  ├─ claude-vs-copilot.md                       # Page comparing the Claude-specific and GitHub Copilot-specific parts
 │  ├─ getting-started.md                         # Page showing how to use this repo as a starter, reference, or learning repo
+│  ├─ googlecad1e2aef0d47fd8.html                # Google Search Console verification file
 │  ├─ robots.txt                                 # Search engine crawler instructions for the public docs site
-│  └─ sitemap.xml                                # List of site pages to help Google and other search engines discover them
+│  └─ sitemap.xml                                # List of site pages to help search engines discover them
+│
+├─ public/                                       # Static assets used by the docs
+│  └─ assets/
+│     ├─ avatar.png                              # Repository avatar
+│     ├─ mermaid-diagram.png                     # Diagram of how the AI layers connect
+│     └─ repo-structure.png                      # Illustration used in LEARN.md
 │
 ├─ scripts/                                      # Shared repo utility scripts
 │  └─ hooks/                                     # Helper scripts used by Claude and GitHub/Copilot hooks
 │     ├─ claude-session-context.sh               # Emits repo context for Claude SessionStart
 │     └─ github-session-start-check.sh           # Bash sessionStart check for GitHub Copilot coding agent hooks
 │
-├─ src/                                          # Project source area; currently present as the code/application folder
-|  ├─ index.html                                 # Small HTML shell for the demo page
-|  ├─ styles.css                                 # Minimal styles for the AI Repo Map layout
-|  └─ app.js                                     # Small script that renders the repo map content
-|
+├─ src/                                          # Project source area; currently the AI Repo Map demo page
+│  ├─ index.html                                 # Small HTML shell for the demo page
+│  ├─ styles.css                                 # Styles for the AI Repo Map layout
+│  └─ app.js                                     # Small script that renders the repo map content
+│
 ├─ AGENTS.md                                     # Shared agent-facing instructions for coding agents working in the repo
 ├─ CLAUDE.md                                     # Main Claude-specific project guidance
 ├─ CONTRIBUTING.md                               # Contributor workflow guidance for keeping the repo accurate and aligned
 ├─ LEARN.md                                      # Course for understanding and copying the system
-└─ README.md                                     # Main human entry point; will become the learning guide/course for the repo
+├─ LICENSE                                       # MIT license
+└─ README.md                                     # Main human entry point
 ```
 
----
-
-## Shared root layer
-
-This is the highest-level explanation layer of the repo.
-
-### [`README.md`](./README.md)
-The human entry point.
-
-It explains:
-
-- what the repo is
-- how the layers fit together
-- how to read and reuse the structure
-
-### [`AGENTS.md`](./AGENTS.md)
-The shared instruction file for coding agents.
-
-Think of it as a README for agents:
-
-- setup
-- commands
-- conventions
-- workflow rules
-- boundaries
-
-### [`CLAUDE.md`](./CLAUDE.md)
-The Claude-specific guide for the project.
-
-It tells Claude:
-
-- what kind of repo this is
-- how the repo is organized
-- what conventions matter
-- how to work safely in this project
-
-### [`CONTRIBUTING.md`](./CONTRIBUTING.md)
-The contributor guide for the project.
-
-It explains:
-
-- how to prepare before making changes
-- what a good small contribution looks like
-- what to validate before opening a pull request
+</details>
 
 ---
 
-## Internal Claude layer
+## Contributing
 
-This is the internal Claude maintainer system.
+Contributions that keep the repo accurate and practical are welcome. Read [CONTRIBUTING.md](./CONTRIBUTING.md) first. The main rule is that the repo must teach exactly the structure it contains.
 
-It exists to help maintain the repo itself.
+If this repo helped you decide where an AI instruction belongs, a ⭐ helps other developers find it.
 
-### [`.claude/agents/`](./.claude/agents)
-Claude subagents for this repo.
+## License
 
-- `learning-repo-maintainer.md`  
-  A focused Claude maintainer for repo structure, learning quality, and consistency.
-
-### [`.claude/rules/`](./.claude/rules)
-Claude-scoped project guidance.
-
-- `repo-learning.md`  
-  Keeps the repo accurate as a teaching repo and prevents made-up conventions or mismatched examples.
-
-### [`.claude/skills/`](./.claude/skills)
-Reusable Claude maintainer workflows.
-
-#### [`.claude/skills/validate-learning-repo/`](./.claude/skills/validate-learning-repo)
-A skill that checks whether the repo still matches what it teaches.
-
-One level deeper:
-
-- `assets/`  
-  Reusable output pieces used by the skill.
-- `assets/report-template.md`  
-  A template for validation output.
-
-- `references/`  
-  Supporting docs the skill reads while working.
-- `references/checklist.md`  
-  A checklist for structure, naming, and teaching quality.
-
-- `scripts/`  
-  Helper scripts used by the skill.
-- `scripts/check-required-files.sh`  
-  Checks whether required files exist.
-
-- `SKILL.md`  
-  The main skill definition and workflow instructions.
-
-### [`.claude/settings.json`](./.claude/settings.json)
-Claude project settings.
-
-In this repo, it matters because Claude hooks are configured through settings and used to inject session-start context.
-
----
-
-## Internal GitHub/Copilot layer
-
-This is the internal GitHub/Copilot maintainer system.
-
-Its role is similar to `.claude/`, but on the GitHub side.
-
-### [`.github/copilot-instructions.md`](./.github/copilot-instructions.md)
-The repo-wide Copilot guide.
-
-It gives broad project instructions that should apply across the repository.
-
-### [`.github/instructions/`](./.github/instructions)
-Path-specific Copilot guidance.
-
-- `learning-content.instructions.md`  
-  Extra guidance for teaching content such as `README.md`, `AGENTS.md`, `CLAUDE.md`, and other repo-learning files.
-
-### [`.github/agents/`](./.github/agents)
-Custom GitHub Copilot agents for this repo.
-
-- `learning-repo-maintainer.agent.md`  
-  A GitHub-side maintainer agent focused on structure, learning quality, and consistency.
-
-### [`.github/hooks/`](./.github/hooks)
-Optional GitHub Copilot coding agent hook configs.
-
-These files use GitHub's documented `.github/hooks/*.json` format for Copilot coding agent on GitHub and GitHub Copilot CLI. They are not a general GitHub repository feature and they are not GitHub Actions.
-
-- `session-start-check.json`  
-  An official `sessionStart` hook config that runs a small deterministic startup check for core repo guidance files.
-
-### [`.github/skills/`](./.github/skills)
-Reusable GitHub/Copilot maintainer workflows.
-
-#### [`.github/skills/review-learning-repo-pr/`](./.github/skills/review-learning-repo-pr)
-A skill for reviewing pull requests that change the repo's learning structure.
-
-One level deeper:
-
-- `assets/`  
-  Reusable review output pieces.
-- `assets/review-template.md`  
-  A template for review findings.
-
-- `references/`  
-  Supporting docs used during review.
-- `references/review-checklist.md`  
-  A checklist for structure, naming, and correctness.
-
-- `scripts/`  
-  Helper scripts used by the skill.
-- `scripts/list-learning-files.sh`  
-  Lists learning-related files changed in a PR.
-
-- `SKILL.md`  
-  The main skill definition and review workflow.
-
----
-
-## Shared external skills
-
-This is the external/shared layer.
-
-Unlike `.claude/` and `.github/`, this layer is mainly for users of the repo and outside agents.
-
-### [`skills/use-this-repo/`](./skills/use-this-repo)
-The shared skill for understanding this repository and its layers.
-
-One level deeper:
-
-- `assets/`  
-  Reusable user-facing output pieces.
-- `assets/adoption-plan-template.md`  
-  A template for suggesting how to adopt the repo.
-
-- `references/`  
-  Supporting docs for understanding the repo.
-- `references/repo-map.md`  
-  A simple map of the repo layers and their roles.
-
-- `scripts/`  
-  Helper scripts for shared usage.
-- `scripts/quickstart-check.sh`  
-  Checks whether the expected starter structure exists.
-
-- `SKILL.md`  
-  The main shared skill definition.
-
-### [`skills/adopt-this-repo/`](./skills/adopt-this-repo)
-The shared skill for adopting this repository structure into another project.
-
-One level deeper:
-
-- `assets/`  
-  Reusable output pieces for adoption planning.
-- `assets/adoption-plan-template.md`  
-  A template for the final adoption plan.
-
-- `references/`  
-  Supporting docs for adoption decisions.
-- `references/repo-map.md`  
-  A short summary of the repo layers and what they are for.
-- `references/adoption-levels.md`  
-  Defines minimal, practical, and full adoption levels.
-- `references/copy-vs-adapt.md`  
-  Explains what to copy as-is, adapt, rename, or skip.
-
-- `scripts/`  
-  Helper scripts for optional adoption checks.
-- `scripts/quickstart-check.sh`  
-  Checks a target repo for a few basic starter files and AI-related paths.
-
-- `SKILL.md`  
-  The main shared skill definition.
-
----
-
-## Support scripts
-
-This is the shared technical support layer.
-
-### [`scripts/hooks/`](./scripts/hooks)
-Helper scripts used by hooks.
-
-- `claude-session-context.sh`  
-  Emits repo context for Claude session start.
-
-- `github-session-start-check.sh`  
-  Bash support script for a GitHub Copilot coding agent `sessionStart` hook.
-
-These scripts are not the lesson itself.  
-They support the automatic orientation behavior.
-
----
-
-## What hooks are doing here
-
-Hooks are automatic commands that run at defined lifecycle events.
-
-In this repo, hooks are used for something simple and useful:
-
-- a session starts
-- Claude can receive quick orientation context
-- GitHub Copilot coding agent can run an optional deterministic startup check
-
-That is a good fit because it is:
-
-- deterministic
-- low-risk
-- practical
-- directly connected to the purpose of the repo
-
----
-
-## What this repo is demonstrating
-
-This project shows a few important ideas:
-
-1. **AI files should have clear roles**  
-   Not everything belongs in one giant instruction file.
-
-2. **Internal and external AI layers should be separated**  
-   Maintainer AI is different from user-facing AI.
-
-3. **Agents, skills, rules, instructions, and hooks each do different jobs**  
-   - rules and instructions = guidance  
-   - agents = specialized roles  
-   - skills = reusable workflows  
-   - hooks = optional deterministic automation for supported runtimes
-
-4. **A template repo should still feel real**  
-   The best template repos do not only name folders.  
-   They show meaningful files and realistic relationships.
-
----
-
-## Current status
-
-This repo is already in a strong foundation stage.
-
-It already has:
-
-- the root instruction files
-- one Claude rule
-- one Claude agent
-- one Claude skill
-- one GitHub instruction set
-- one GitHub agent
-- one GitHub skill
-- two external shared skills
-- one optional hook on each side
-
-That means the repo is already more than an idea.  
-It has a real internal architecture.
-
----
-
-## One-line description
-
-`ai-repo-structure` is a practical learning repository that demonstrates how to structure a real AI-enabled project using shared agent instructions, Claude-specific configuration, GitHub/Copilot-specific configuration, internal maintainer agents and skills, hooks, and external shared skills.
+[MIT](./LICENSE)
